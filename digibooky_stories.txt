@@ -1,0 +1,215 @@
+- Story 1: get all books
+	- instance variables --> Book.java  + DTO&Mapper
+		- ISBN
+		- Title
+		- AuthorFirstName
+		- AuthorLastName
+	- endpoint: GET books
+	- comments: 
+	- estimation: 3h
+	- test: 
+		- if we get a list of books back
+		- edge cases (null, etc...)
+	
+- Story 2: Show details of book
+	- instance variables --> add to Book.java
+		- smallSummary
+		- 
+		- 
+	- method: getFullNameAuthor
+	- endpoint: GET books/ISBN
+	- comments: 
+	- estimation: 1h
+	- test: 
+		- search for a certain book by ISBN
+		- edge cases
+- Story 3: Search a book by ISBN
+	- instance variables
+		- 
+		- 
+		- 
+	- method: getIsbn()
+	- endpoint: GET books?ISBN=blablabla
+	- comments: use Regex
+	- estimation: 1,5h
+	- test: 
+		- given a part of a ISBN and get books that 'contains' that part of ISBN 
+		- 
+- Story 4: Search a book by title
+	- instance variables
+		- 
+		- 
+		- 
+	- method: getTitle
+	- endpoint: GET books?title=blablabla
+	- comments: 
+	- estimation: 1u
+	- test: 
+		- given a part of a title and get books that 'contain' that part in title
+		- 
+- Story 5: Search a book by author
+	- instance variables
+		- 
+		- 
+		- 
+	- methods: getAuthor
+	- endpoint: GET books?author=blablabla
+	- comments: 
+	- estimation: 1u
+	- test: 
+		- given a part of a authorName and get books that 'contain' that part in authorName
+		- 
+
+- Story 6A: Register as member
+	- instance variables -> Member.java
+		- id (UUID)
+		- INSS (String) --> first only 'numbers' (no dots and dashes) -> required
+		- firstName
+		- lastName --> required
+		- email --> required
+		- streetName
+		- streetNumber
+		- postalCode
+		- city --> required
+	- endpoint: POST member
+	- comments: 
+		- INSS -> format? xx.xx.xx-xxx.xx
+		- email regex
+	- estimation: 3h
+	- test: 
+		- check if INSS is unique
+		- check if email is unique
+		- check if members is added (Rest assure test)
+		- check if all required fields are not null
+- Story 7: view members as Admin
+	- members DTO&Mapper
+	- instance variables -> Admin.java 	
+		- id
+		- lastName
+		- firstName
+		- email
+	- endpoint: GET members --> authorization Admin
+	- comments: 
+		-One Admin user should exist on startup-> put in repo
+	- estimation: 3h
+	- test: 
+		- when asked for members, get an overview of members
+		- check if user that asks for members is admin
+- Story 9: Register Librarian
+	- instance variables
+		- id
+		- lastName
+		- firstName
+		- email
+	- endpoint: POST librarian
+	- comments: 
+	- estimation: 2h
+	- test: 
+		- check if librarian has been created
+		- check if only admin can add librarian
+		- 
+- Story 10A: Register a new book
+	- instance variables
+		- DTO + mapper
+		- 
+		- 
+		- 
+	- endpoint: POST books -> autorization librarian
+	- comments: only library can add a new book
+	- estimation: 1h
+	- test: 
+		- check if new book has been created
+		- check if user that added book is librarian
+- Story 10B: update a book
+	- instance variables
+		- DTO + mapper
+		- 
+		- 
+		- 
+	- endpoint: PUT books/ISBN -> autorization librarian
+	- comments: only librarian can add a new book
+	- estimation: 1h
+	- test: 
+		- check if new book has been updated
+		- check if user that updated book is librarian
+		- ISBN cannot be moddified
+- Story 10C: DELETE a book
+	- instance variables
+		- DTO + mapper
+		- state --> deleted? (boolean?)
+		- 
+		- 
+	- endpoint: PUT books/ISBN?state=false -> autorization librarian
+	- comments: only librarian can add a new book
+		- soft delete!!
+	- estimation: 2h
+	- test: 
+		- check if book is soft deleted
+		- check if the user is a librarian
+		- check if state of book is updated to true
+- Story 11: Lending a book
+	- instance variables -> Rental
+		- id
+		- book
+		- member
+		- dueDate (default today+3Weeks)
+	- method: lendingBook(memberId, ISBN)
+	- endpoint: POST rentals/ISBN&memberId
+	- comments: book can only be lent once
+	- estimation: 2h
+	- test: 
+		- if member rents a book and is available in the rental collection
+		- if book is not in rental collection --> exception/false/message/log...
+- Story 12: Return a book
+	- instance variables
+		- 
+		- 
+		- 
+		- 
+	- endpoint: DELETE rentals/id
+	- comments: 
+		- late returning -> coresponding message
+		- remove from rental collection and add to book collection
+		- change state vs delete --> discuss
+	- estimation: 1h
+	- test: 
+		- check if rental is removed from collection
+		- check if book is added to book collection
+		- check if message is shown -> late return
+- Story 13: Lent books
+	- instance variables
+		- 
+		- 
+		- 
+		- 
+	- endpoint: GET rentals?member=memberId
+	- comments: only librarian can see lent books
+	- estimation: 1h
+	- test: 
+		- look up memberId -> get list of books he has rented
+		- 
+
+- Story 14: 
+	- instance variables
+		- 
+		- 
+		- 
+		- 
+	- endpoint: GET rentals/overDue
+	- comments: only librarian can see the books that are overdue
+	- estimation: 1h
+	- test: 
+		- get an overview of all overdue rentals
+		- 
+- Story 15: 
+	- instance variables
+		- 
+		- 
+		- 
+		- state --> Book.java
+	- endpoint: GET books/ISBN
+	- comments: translate state to string --> rented/available
+	- estimation: 
+	- test: 
+		- get the state of a book and (by whom)
+		- 
