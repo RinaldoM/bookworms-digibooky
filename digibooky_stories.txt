@@ -6,7 +6,7 @@
 		- AuthorLastName
 	- endpoint: GET books
 	- comments: 
-	- estimation: 3h
+	- estimation: Large
 	- test: 
 		- if we get a list of books back
 		- edge cases (null, etc...)
@@ -19,7 +19,7 @@
 	- method: getFullNameAuthor
 	- endpoint: GET books/ISBN
 	- comments: 
-	- estimation: 1h
+	- estimation: Small
 	- test: 
 		- search for a certain book by ISBN
 		- edge cases
@@ -31,7 +31,7 @@
 	- method: getIsbn()
 	- endpoint: GET books?ISBN=blablabla
 	- comments: use Regex
-	- estimation: 1,5h
+	- estimation: Medium
 	- test: 
 		- given a part of a ISBN and get books that 'contains' that part of ISBN 
 		- 
@@ -43,7 +43,7 @@
 	- method: getTitle
 	- endpoint: GET books?title=blablabla
 	- comments: 
-	- estimation: 1u
+	- estimation: Small
 	- test: 
 		- given a part of a title and get books that 'contain' that part in title
 		- 
@@ -55,7 +55,7 @@
 	- methods: getAuthor
 	- endpoint: GET books?author=blablabla
 	- comments: 
-	- estimation: 1u
+	- estimation: Small
 	- test: 
 		- given a part of a authorName and get books that 'contain' that part in authorName
 		- 
@@ -75,7 +75,7 @@
 	- comments: 
 		- INSS -> format? xx.xx.xx-xxx.xx
 		- email regex
-	- estimation: 3h
+	- estimation: Large
 	- test: 
 		- check if INSS is unique
 		- check if email is unique
@@ -91,7 +91,7 @@
 	- endpoint: GET members --> authorization Admin
 	- comments: 
 		-One Admin user should exist on startup-> put in repo
-	- estimation: 3h
+	- estimation: Large
 	- test: 
 		- when asked for members, get an overview of members
 		- check if user that asks for members is admin
@@ -103,7 +103,7 @@
 		- email
 	- endpoint: POST librarian
 	- comments: 
-	- estimation: 2h
+	- estimation: Medium
 	- test: 
 		- check if librarian has been created
 		- check if only admin can add librarian
@@ -116,7 +116,7 @@
 		- 
 	- endpoint: POST books -> autorization librarian
 	- comments: only library can add a new book
-	- estimation: 1h
+	- estimation: Small
 	- test: 
 		- check if new book has been created
 		- check if user that added book is librarian
@@ -128,7 +128,7 @@
 		- 
 	- endpoint: PUT books/ISBN -> autorization librarian
 	- comments: only librarian can add a new book
-	- estimation: 1h
+	- estimation: Small
 	- test: 
 		- check if new book has been updated
 		- check if user that updated book is librarian
@@ -142,7 +142,7 @@
 	- endpoint: PUT books/ISBN?state=false -> autorization librarian
 	- comments: only librarian can add a new book
 		- soft delete!!
-	- estimation: 2h
+	- estimation: Medium
 	- test: 
 		- check if book is soft deleted
 		- check if the user is a librarian
@@ -156,7 +156,7 @@
 	- method: lendingBook(memberId, ISBN)
 	- endpoint: POST rentals/ISBN&memberId
 	- comments: book can only be lent once
-	- estimation: 2h
+	- estimation: Medium
 	- test: 
 		- if member rents a book and is available in the rental collection
 		- if book is not in rental collection --> exception/false/message/log...
@@ -171,7 +171,7 @@
 		- late returning -> coresponding message
 		- remove from rental collection and add to book collection
 		- change state vs delete --> discuss
-	- estimation: 1h
+	- estimation: Small
 	- test: 
 		- check if rental is removed from collection
 		- check if book is added to book collection
@@ -184,12 +184,12 @@
 		- 
 	- endpoint: GET rentals?member=memberId
 	- comments: only librarian can see lent books
-	- estimation: 1h
+	- estimation: Small
 	- test: 
 		- look up memberId -> get list of books he has rented
 		- 
 
-- Story 14: 
+- Story 14: librarian can see books that are overdue
 	- instance variables
 		- 
 		- 
@@ -197,11 +197,11 @@
 		- 
 	- endpoint: GET rentals/overDue
 	- comments: only librarian can see the books that are overdue
-	- estimation: 1h
+	- estimation: Small
 	- test: 
 		- get an overview of all overdue rentals
 		- 
-- Story 15: 
+- Story 15: Member can see borrowed books
 	- instance variables
 		- 
 		- 
@@ -209,7 +209,7 @@
 		- state --> Book.java
 	- endpoint: GET books/ISBN
 	- comments: translate state to string --> rented/available
-	- estimation: 
+	- estimation: Small
 	- test: 
 		- get the state of a book and (by whom)
 		- 
