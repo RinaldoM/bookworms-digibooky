@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 public class BookMapper {
 
     public BookDto toDto(Book book) {
-        return new BookDto(book.getIsbn(), book.getTitle(), book.getAuthorFirstName(), book.getAuthorLastName());
+        return new BookDto(book.getIsbn(), book.getTitle(), book.getAuthorFirstName(), book.getAuthorLastName(), book.getShortSummary());
     }
 
     public List<BookDto> toDto(Collection<Book> bookList) {

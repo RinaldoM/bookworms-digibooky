@@ -36,8 +36,8 @@ class BookControllerIntegrationTest {
     void getAllBooks_BooksAreShownCorrectly() {
 
         List<Book> bookList = Lists.newArrayList(
-                new Book("1", "HarryPotter", "JK", "Rowling"),
-                new Book("2", "GameOfThrone", "GeorgeRR", "Martin"));
+                new Book("1", "HarryPotter", "JK", "Rowling", "A book about teen wizards"),
+                new Book("2", "GameOfThrone", "GeorgeRR", "Martin", "A book about pissed off families"));
         bookList.forEach(book -> bookRepository.save(book));
 
         BookDto[] result = RestAssured
@@ -54,5 +54,51 @@ class BookControllerIntegrationTest {
 
         List<BookDto> expectedList = bookMapper.toDto(bookList);
         Assertions.assertThat(List.of(result)).hasSameElementsAs(expectedList);
+    }
+
+    @Test
+    void getBookByISBN_BookIsShownCorrectly() {
+
+        List<Book> bookList = Lists.newArrayList(
+                new Book("1", "HarryPotter", "JK", "Rowling", "A book about teen wizards"),
+                new Book("2", "GameOfThrone", "GeorgeRR", "Martin", "A book about pissed off families"));
+        bookList.forEach(book -> bookRepository.save(book));
+
+        BookDto result = RestAssured
+                .given()
+                .port(port)
+                .when()
+                .accept(JSON)
+                .get("/books/2")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK.value())
+                .extract()
+                .as(BookDto.class);
+
+        BookDto expectedBook = bookMapper.toDto(new Book("2", "GameOfThrone", "GeorgeRR", "Martin", "A book about pissed off families"));
+        Assertions.assertThat(result).isEqualTo(expectedBook);
+    }
+
+    @Test
+    void getBookByISBN_IfWrongIsbnEnteredThenHandledCorrectly() {
+
+        List<Book> bookList = Lists.newArrayList(
+                new Book("1", "HarryPotter", "JK", "Rowling", "A book about teen wizards"),
+                new Book("2", "GameOfThrone", "GeorgeRR", "Martin", "A book about pissed off families"));
+        bookList.forEach(book -> bookRepository.save(book));
+
+        RestAssured
+                .given()
+                .port(port)
+                .when()
+                .accept(JSON)
+                .get("/books/4")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+
+        Assertions.assertThatThrownBy(() -> bookRepository.getBookByIsbn("4")).isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("No book found for isbn 4");
     }
 }
