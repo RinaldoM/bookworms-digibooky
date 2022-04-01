@@ -3,7 +3,6 @@ package com.bookworms.digibooky.users.api;
 public class CreateMemberDto {
 
     private String inss;
-    private String id;
     private String firstName;
     private String lastName;
     private String email;
@@ -12,8 +11,8 @@ public class CreateMemberDto {
     private int postalCode;
     private String city;
 
-    public CreateMemberDto(String inss, String id, String firstName, String lastName, String email, String streetName, String streetNumber, int postalCode, String city) {
-        this.id = id;
+    public CreateMemberDto(String inss, String firstName, String lastName, String email, String streetName, String streetNumber, int postalCode, String city) {
+        this.inss = inss;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -25,10 +24,6 @@ public class CreateMemberDto {
 
     public String getInss() {
         return inss;
-    }
-
-    public String getId() {
-        return id;
     }
 
     public String getFirstName() {

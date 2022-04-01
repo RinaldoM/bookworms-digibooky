@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class MemberService {
 
-    private MemberMapper memberMapper;
-    private MemberRepository memberRepository;
+    private final MemberMapper memberMapper;
+    private final MemberRepository memberRepository;
 
     public MemberService(MemberMapper memberMapper, MemberRepository memberRepository) {
         this.memberMapper = memberMapper;
@@ -17,8 +17,8 @@ public class MemberService {
     }
 
     public MemberDto registerMember(CreateMemberDto createMemberDto) {
-        Member createdMember = memberMapper.toMember(createMemberDto);
-        memberRepository.saveMember(createdMember);
-        return memberMapper.toDto(createdMember);
+        Member member = memberMapper.toMember(createMemberDto);
+        memberRepository.saveMember(member);
+        return memberMapper.toDto(member);
     }
 }

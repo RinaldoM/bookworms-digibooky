@@ -23,14 +23,16 @@ class MemberControllerTest {
     @Test
     void givenMember_WhenRegisterMember_TheReturnMember() {
         //  GIVEN
-        Member expectedMember = new Member("66.02.06-203.33", "Alen", "alen.jeremy@awesomeness.great"," KarelDeGrote");
+        Member expectedMember = new Member("66.02.06-203.33","Jeremy", "Alen", "alen.jeremy@awesomeness.great", "Switchfully", "3", 3454, " KarelDeGrote");
         //  WHEN
 
-        MemberDto actualMember = RestAssured
+        MemberDto actualMemberDto = RestAssured
                 .given()
                 .port(port)
+                .body(expectedMember)
+                .contentType(ContentType.JSON)
                 .when()
-                 .accept(ContentType.JSON)
+                .accept(ContentType.JSON)
                 .post("/members")
                 .then()
                 .assertThat()
@@ -38,6 +40,14 @@ class MemberControllerTest {
                 .extract()
                 .as(MemberDto.class);
         //  THEN
-        Assertions.assertThat(actualMember).isEqualTo(MemberMapper.toDto(expectedMember));
+        MemberDto expectedMemberDto = MemberMapper.toDto(expectedMember);
+        Assertions.assertThat(actualMemberDto.getId()).isNotBlank();
+        Assertions.assertThat(actualMemberDto.getFirstName()).isEqualTo(expectedMemberDto.getFirstName());
+        Assertions.assertThat(actualMemberDto.getLastName()).isEqualTo(expectedMemberDto.getLastName());
+        Assertions.assertThat(actualMemberDto.getEmail()).isEqualTo(expectedMemberDto.getEmail());
+        Assertions.assertThat(actualMemberDto.getStreetName()).isEqualTo(expectedMemberDto.getStreetName());
+        Assertions.assertThat(actualMemberDto.getStreetNumber()).isEqualTo(expectedMemberDto.getStreetNumber());
+        Assertions.assertThat(actualMemberDto.getPostalCode()).isEqualTo(expectedMemberDto.getPostalCode());
+        Assertions.assertThat(actualMemberDto.getCity()).isEqualTo(expectedMemberDto.getCity());
     }
 }
