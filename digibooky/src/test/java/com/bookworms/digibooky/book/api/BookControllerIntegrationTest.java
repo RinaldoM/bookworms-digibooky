@@ -57,7 +57,7 @@ class BookControllerIntegrationTest {
     }
 
     @Test
-    void getBookByISBN_BookisShownCorrectly() {
+    void getBookByISBN_BookIsShownCorrectly() {
 
         List<Book> bookList = Lists.newArrayList(
                 new Book("1", "HarryPotter", "JK", "Rowling", "A book about teen wizards"),
@@ -78,5 +78,27 @@ class BookControllerIntegrationTest {
 
         BookDto expectedBook = bookMapper.toDto(new Book("2", "GameOfThrone", "GeorgeRR", "Martin", "A book about pissed off families"));
         Assertions.assertThat(result).isEqualTo(expectedBook);
+    }
+
+    @Test
+    void getBookByISBN_IfWrongIsbnEnteredThenHandledCorrectly() {
+
+        List<Book> bookList = Lists.newArrayList(
+                new Book("1", "HarryPotter", "JK", "Rowling", "A book about teen wizards"),
+                new Book("2", "GameOfThrone", "GeorgeRR", "Martin", "A book about pissed off families"));
+        bookList.forEach(book -> bookRepository.save(book));
+
+        RestAssured
+                .given()
+                .port(port)
+                .when()
+                .accept(JSON)
+                .get("/books/4")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+
+        Assertions.assertThatThrownBy(() -> bookRepository.getBookByIsbn("4")).isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("No book found for isbn 4");
     }
 }

@@ -15,8 +15,7 @@
 	- instance variables --> add to Book.java
 		- smallSummary
 		- 
-		- 
-	- method: getFullNameAuthor
+		-
 	- endpoint: GET books/ISBN
 	- comments: 
 	- estimation: Small
