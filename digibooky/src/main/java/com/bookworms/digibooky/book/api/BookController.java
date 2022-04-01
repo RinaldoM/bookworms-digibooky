@@ -20,7 +20,7 @@ public class BookController {
     }
 
     @GetMapping
-    public String getAll() {
+    public List<BookDto> getAll() {
         return bookService.getAll();
     }
 
