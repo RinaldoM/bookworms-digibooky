@@ -36,8 +36,8 @@ class BookControllerIntegrationTest {
     void getAllBooks_BooksAreShownCorrectly() {
 
         List<Book> bookList = Lists.newArrayList(
-                new Book("1", "HarryPotter", "JK", "Rowling"),
-                new Book("2", "GameOfThrone", "GeorgeRR", "Martin"));
+                new Book("1", "HarryPotter", "JK", "Rowling", "A book about teen wizards"),
+                new Book("2", "GameOfThrone", "GeorgeRR", "Martin", "A book about pissed off families"));
         bookList.forEach(book -> bookRepository.save(book));
 
         BookDto[] result = RestAssured

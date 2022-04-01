@@ -10,7 +10,7 @@ import java.util.List;
 
 @Service
 public class BookService {
-    private Logger serviceLogger = LoggerFactory.getLogger(BookService.class);
+    private final Logger serviceLogger = LoggerFactory.getLogger(BookService.class);
 
     private final BookMapper bookMapper;
     private final BookRepository bookRepository;
@@ -23,5 +23,10 @@ public class BookService {
     public List<BookDto> getAll() {
         serviceLogger.info("Showing all books to user.");
         return bookMapper.toDto(bookRepository.getAll());
+    }
+
+    public BookDto getBookByIsbn(String isbn) {
+        serviceLogger.info("Showing book with ISBN " + isbn + " to user.");
+        return bookMapper.toDto(bookRepository.getBookByIsbn(isbn));
     }
 }

@@ -3,16 +3,18 @@ package com.bookworms.digibooky.book.api.dto;
 import java.util.Objects;
 
 public class BookDto {
-    private String isbn;
-    private String title;
-    private String authorFirstName;
-    private String authorLastName;
+    private final String isbn;
+    private final String title;
+    private final String authorFirstName;
+    private final String authorLastName;
+    private final String smallSummary;
 
-    public BookDto(String isbn, String title, String authorFirstName, String authorLastName) {
+    public BookDto(String isbn, String title, String authorFirstName, String authorLastName, String smallSummary) {
         this.isbn = isbn;
         this.title = title;
         this.authorFirstName = authorFirstName;
         this.authorLastName = authorLastName;
+        this.smallSummary = smallSummary;
     }
 
     public String getIsbn() {

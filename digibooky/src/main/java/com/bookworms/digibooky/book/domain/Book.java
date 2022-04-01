@@ -1,11 +1,11 @@
 package com.bookworms.digibooky.book.domain;
 
 public class Book {
-    private String isbn;
-    private String title;
-    private String authorFirstName;
-    private String authorLastName;
-    private String shortSummary;
+    private final String isbn;
+    private final String title;
+    private final String authorFirstName;
+    private final String authorLastName;
+    private final String shortSummary;
 
     public Book(String isbn, String title, String authorFirstName, String authorLastName, String shortSummary) {
         this.isbn = isbn;
@@ -13,13 +13,6 @@ public class Book {
         this.authorFirstName = authorFirstName;
         this.authorLastName = authorLastName;
         this.shortSummary = shortSummary;
-    }
-
-    public Book(String isbn, String title, String authorFirstName, String authorLastName) {
-        this.isbn = isbn;
-        this.title = title;
-        this.authorFirstName = authorFirstName;
-        this.authorLastName = authorLastName;
     }
 
     public String getTitle() {
@@ -36,5 +29,9 @@ public class Book {
 
     public String getIsbn() {
         return this.isbn;
+    }
+
+    public String getShortSummary() {
+        return shortSummary;
     }
 }
