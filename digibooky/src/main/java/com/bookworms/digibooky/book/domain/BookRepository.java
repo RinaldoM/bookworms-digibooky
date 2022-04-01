@@ -18,4 +18,9 @@ public class BookRepository {
         booksByISBN.put(book.getISBN(), book);
         return book;
     }
+
+    public Collection<Book> getAll() {
+        return booksByISBN.values();
+    }
+
 }
