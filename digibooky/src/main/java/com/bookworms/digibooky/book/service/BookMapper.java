@@ -10,12 +10,9 @@ import java.util.stream.Collectors;
 
 @Component
 public class BookMapper {
-    public List<BookDto> toMovieDTO(List<Book> bookList) {
-        return null;
-    }
 
     public BookDto toDto(Book book) {
-        return new BookDto(book.getISBN(), book.getTitle(), book.getAuthorFirstName(), book.getAuthorLastName());
+        return new BookDto(book.getIsbn(), book.getTitle(), book.getAuthorFirstName(), book.getAuthorLastName());
     }
 
     public List<BookDto> toDto(Collection<Book> bookList) {

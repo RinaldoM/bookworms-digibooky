@@ -6,6 +6,7 @@ import com.bookworms.digibooky.book.domain.BookRepository;
 import com.bookworms.digibooky.book.service.BookMapper;
 import io.restassured.RestAssured;
 import org.assertj.core.api.Assertions;
+import static org.assertj.core.api.Assertions.assertThat;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,13 +14,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.annotation.DirtiesContext;
-
 import java.util.List;
-
 import static io.restassured.http.ContentType.JSON;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class BookControllerIntegrationTest {
 
     @LocalServerPort
@@ -35,7 +35,8 @@ class BookControllerIntegrationTest {
     @Test
     void getAllBooks_BooksAreShownCorrectly() {
 
-        List<Book> bookList = Lists.newArrayList(new Book(), new Book());
+        List<Book> bookList = Lists.newArrayList(new Book("1", "HarryPotter", "JK", "Rowling"),
+                new Book("2", "GameOfThrone", "GeorgeRR", "Martin"));
 
         bookList.forEach(book -> bookRepository.save(book));
 
@@ -51,7 +52,7 @@ class BookControllerIntegrationTest {
                 .extract()
                 .as(BookDto[].class);
 
-        List<BookDto> expectedList = bookMapper.toMovieDTO(bookList);
+        List<BookDto> expectedList = bookMapper.toDto(bookList);
 
         Assertions.assertThat(List.of(result)).hasSameElementsAs(expectedList);
 

@@ -9,8 +9,8 @@ import java.util.List;
 @Service
 public class BookService {
 
-    private BookMapper bookMapper;
-    private BookRepository bookRepository;
+    private final BookMapper bookMapper;
+    private final BookRepository bookRepository;
 
     public BookService(BookMapper bookMapper, BookRepository bookRepository) {
         this.bookMapper = bookMapper;

@@ -1,24 +1,31 @@
 package com.bookworms.digibooky.book.domain;
 
 public class Book {
-    private String ISBN;
+    private String isbn;
     private String title;
-    private String AuthorFirstName;
-    private String AuthorLastName;
+    private String authorFirstName;
+    private String authorLastName;
+
+    public Book(String isbn, String title, String authorFirstName, String authorLastName) {
+        this.isbn = isbn;
+        this.title = title;
+        this.authorFirstName = authorFirstName;
+        this.authorLastName = authorLastName;
+    }
 
     public String getTitle() {
         return title;
     }
 
     public String getAuthorFirstName() {
-        return AuthorFirstName;
+        return authorFirstName;
     }
 
     public String getAuthorLastName() {
-        return AuthorLastName;
+        return authorLastName;
     }
 
-    public String getISBN() {
-        return this.ISBN;
+    public String getIsbn() {
+        return this.isbn;
     }
 }

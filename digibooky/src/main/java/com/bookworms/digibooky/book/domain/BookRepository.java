@@ -15,7 +15,7 @@ public class BookRepository {
     }
 
     public Book save(Book book) {
-        booksByISBN.put(book.getISBN(), book);
+        booksByISBN.put(book.getIsbn(), book);
         return book;
     }
 
