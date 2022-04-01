@@ -8,7 +8,6 @@ public class BookDto {
     private String authorFirstName;
     private String authorLastName;
 
-
     public BookDto(String isbn, String title, String authorFirstName, String authorLastName) {
         this.isbn = isbn;
         this.title = title;
