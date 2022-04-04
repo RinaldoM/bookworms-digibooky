@@ -29,8 +29,8 @@ public class UserMapper {
     public Member toMember(CreateMemberDto createMemberDto) {
         return new Member(
                 createMemberDto.getInss(),
-                createMemberDto.getFirstName(),
                 createMemberDto.getLastName(),
+                createMemberDto.getFirstName(),
                 createMemberDto.getEmail(),
                 createMemberDto.getStreetName(),
                 createMemberDto.getStreetNumber(),

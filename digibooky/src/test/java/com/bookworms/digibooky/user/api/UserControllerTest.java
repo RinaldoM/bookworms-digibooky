@@ -32,7 +32,7 @@ class UserControllerTest {
         @Test
         void givenMember_WhenRegisterMember_TheReturnMember() {
             //  GIVEN
-            Member expectedMember = new Member("66.02.06-203.33", "Jeremy", "Alen", "alen.jeremy@awesomeness.great", "Switchfully", "3", 3454, " KarelDeGrote");
+            Member expectedMember = new Member("66.02.06-203.33", "Alen", "Jeremy", "alen.jeremy@awesomeness.great", "Switchfully", "3", 3454, " KarelDeGrote");
             //  WHEN
 
             MemberDto actualMemberDto = RestAssured
@@ -169,7 +169,7 @@ class UserControllerTest {
 
         @Test
         void givenEmptyLastName_WhenRegisterMember_ThenHttpStatusBadRequest() {
-            Member expectedMember = new Member("66.02.06-203.33", "Jeremy", "", "alen.jeremy@awesomeness.great", "Switchfully", "3", 3454, " KarelDeGrote");
+            Member expectedMember = new Member("66.02.06-203.33", "", "Jeremy", "alen.jeremy@awesomeness.great", "Switchfully", "3", 3454, " KarelDeGrote");
             //  WHEN
             RestAssured
                     .given()

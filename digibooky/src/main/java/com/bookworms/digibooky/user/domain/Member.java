@@ -1,57 +1,29 @@
 package com.bookworms.digibooky.user.domain;
 
-import java.util.UUID;
-
-public class Member {
-    private final String id;
+public class Member extends User {
     private final String inss;
-    private String firstName;
-    private final String lastName;
-    private final String email;
     private String streetName;
     private String streetNumber;
     private int postalCode;
     private final String city;
 
-
     public Member(String inss, String lastName, String email, String city) {
-        this.id = UUID.randomUUID().toString();
+        super(lastName, null, email);
         this.inss = inss;
-        this.lastName = lastName;
-        this.email = email;
         this.city = city;
     }
 
-    public Member(String inss, String firstName, String lastName, String email, String streetName, String streetNumber, int postalCode, String city) {
-        this.id = UUID.randomUUID().toString();
+    public Member(String inss, String lastName, String firstName, String email, String streetName, String streetNumber, int postalCode, String city) {
+        super(lastName, firstName, email);
         this.inss = inss;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
         this.streetName = streetName;
         this.streetNumber = streetNumber;
         this.postalCode = postalCode;
         this.city = city;
     }
 
-    public String getId() {
-        return id;
-    }
-
     public String getInss() {
         return inss;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public String getEmail() {
-        return email;
     }
 
     public String getStreetName() {

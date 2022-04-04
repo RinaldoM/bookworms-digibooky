@@ -1,0 +1,33 @@
+package com.bookworms.digibooky.user.domain;
+
+import java.util.UUID;
+
+public abstract class User {
+    private final String id;
+    private final String lastName;
+    private final String firstName;
+    private final String email;
+
+    public User(String lastName, String firstName, String email) {
+        this.id = UUID.randomUUID().toString();
+        this.lastName = lastName;
+        this.firstName = firstName;
+        this.email = email;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+}
