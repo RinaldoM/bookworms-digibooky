@@ -7,10 +7,10 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 public class Rental {
-    private String rentalId;
-    private Book book;
-    private Member member;
-    private LocalDate dueDate;
+    private final String rentalId;
+    private final Book book;
+    private final Member member;
+    private final LocalDate dueDate;
 
     public Rental(Book book, Member member) {
         this.rentalId = UUID.randomUUID().toString();

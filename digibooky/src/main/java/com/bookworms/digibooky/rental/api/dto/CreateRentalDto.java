@@ -3,8 +3,8 @@ package com.bookworms.digibooky.rental.api.dto;
 import java.util.Objects;
 
 public class CreateRentalDto {
-    private String userId;
-    private String bookIsbn;
+    private final String userId;
+    private final String bookIsbn;
 
 
     public CreateRentalDto(String userId, String bookIsbn) {
