@@ -6,3 +6,6 @@
 # Datasource local storage ignored files
 /dataSources/
 /dataSources.local.xml
+/libraries/Maven__io_rest_assured_rest_assured_4_4_0.xml
+/libraries/Maven__io_rest_assured_spring_commons_4_4_0.xml
+/libraries/Maven__io_rest_assured_spring_mock_mvc_4_4_0.xml
