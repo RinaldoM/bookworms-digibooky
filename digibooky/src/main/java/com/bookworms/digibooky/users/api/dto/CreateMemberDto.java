@@ -1,4 +1,4 @@
-package com.bookworms.digibooky.users.api;
+package com.bookworms.digibooky.users.api.dto;
 
 public class CreateMemberDto {
 
