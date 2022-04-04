@@ -22,6 +22,8 @@ public class MemberMapper {
                 member.getCity());
     }
 
+
+
     public Member toMember(CreateMemberDto createMemberDto) {
         return new Member(
                 createMemberDto.getInss(),

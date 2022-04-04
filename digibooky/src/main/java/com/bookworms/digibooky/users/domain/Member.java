@@ -15,7 +15,11 @@ public class Member {
 
 
     public Member(String inss, String lastName, String email, String city) {
-        this(inss, null, lastName, email, null, null, 0, city);
+        this.id = UUID.randomUUID().toString();
+        this.inss = inss;
+        this.lastName = lastName;
+        this.email = email;
+        this.city = city;
     }
 
     public Member(String inss, String firstName, String lastName, String email, String streetName, String streetNumber, int postalCode, String city) {
