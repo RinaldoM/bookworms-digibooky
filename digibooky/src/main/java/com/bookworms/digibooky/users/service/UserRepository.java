@@ -7,10 +7,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Repository
-public class MemberRepository {
+public class UserRepository {
     private final Map<String, Member> membersById;
 
-    public MemberRepository() {
+    public UserRepository() {
         this.membersById = new HashMap<>();
     }
 

@@ -1,6 +1,6 @@
 package com.bookworms.digibooky.users.service;
 
-import com.bookworms.digibooky.users.api.CreateMemberDto;
+import com.bookworms.digibooky.users.api.dto.CreateMemberDto;
 import com.bookworms.digibooky.users.api.dto.MemberDto;
 import com.bookworms.digibooky.users.domain.Member;
 import org.slf4j.Logger;
@@ -12,13 +12,13 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.regex.Pattern;
 
 @Service
-public class MemberService {
+public class UserService {
 
-    Logger serviceLogger = LoggerFactory.getLogger(MemberService.class);
-    private final MemberMapper memberMapper;
-    private final MemberRepository memberRepository;
+    Logger serviceLogger = LoggerFactory.getLogger(UserService.class);
+    private final UserMapper memberMapper;
+    private final UserRepository memberRepository;
 
-    public MemberService(MemberMapper memberMapper, MemberRepository memberRepository) {
+    public UserService(UserMapper memberMapper, UserRepository memberRepository) {
         this.memberMapper = memberMapper;
         this.memberRepository = memberRepository;
     }
@@ -32,7 +32,7 @@ public class MemberService {
         Member member = memberMapper.toMember(createMemberDto);
         serviceLogger.info("Member getting registered.");
         memberRepository.saveMember(member);
-        return memberMapper.toDto(member);
+        return memberMapper.toMemberDto(member);
     }
 
     private void validateAndCheckLoggingMessage(boolean condition, String errorMessage, String confirmationMessage) {
