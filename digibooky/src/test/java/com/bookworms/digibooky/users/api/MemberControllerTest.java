@@ -20,6 +20,8 @@ class MemberControllerTest {
     @LocalServerPort
     private int port;
 
+    private MemberController memberController;
+
     @Test
     void givenMember_WhenRegisterMember_TheReturnMember() {
         //  GIVEN
@@ -52,13 +54,41 @@ class MemberControllerTest {
     }
 
     @Test
-    void givenImproperEmail_WhenRegisterMember_ThenThrowsIllegalArgumentException() {
+    void givenImproperEmail_WhenRegisterMember_ThenHttpStatusBadRequest() {
         Member expectedMember = new Member("66.02.06-203.33","Jeremy", "Alen", "wrongEmailAdress", "Switchfully", "3", 3454, " KarelDeGrote");
         //  WHEN
         RestAssured
                 .given()
                 .port(port)
                 .body(expectedMember)
+                .contentType(ContentType.JSON)
+                .when()
+                .accept(ContentType.JSON)
+                .post("/members")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @Test
+    void givenNotUniqueEmail_WhenRegisterMember_ThenHttpStatusBadRequest() {
+        Member firstMember = new Member("66.02.06-203.33","Jeremy", "Alen", "alen.jeremy@awesomeness.great", "Switchfully", "3", 3454, "KarelDeGrote");
+        Member secondMember = new Member("88.10.05-195.44","Herbert", "Coenen", "alen.jeremy@awesomeness.great", "Switchfully", "3", 3454, "KarelMarx");
+
+        RestAssured
+                .given()
+                .port(port)
+                .body(firstMember)
+                .contentType(ContentType.JSON)
+                .when()
+                .accept(ContentType.JSON)
+                .post("/members");
+
+        //  WHEN
+        RestAssured
+                .given()
+                .port(port)
+                .body(secondMember)
                 .contentType(ContentType.JSON)
                 .when()
                 .accept(ContentType.JSON)

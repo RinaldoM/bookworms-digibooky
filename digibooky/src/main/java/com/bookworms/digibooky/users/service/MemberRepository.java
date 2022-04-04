@@ -17,4 +17,9 @@ public class MemberRepository {
     public void saveMember(Member memberToSave) {
         membersById.put(memberToSave.getId(), memberToSave);
     }
+
+    public boolean emailAlreadyExists(String email) {
+        return membersById.values().stream()
+                .anyMatch(member -> member.getEmail().equals(email));
+    }
 }

@@ -24,11 +24,7 @@ public class MemberService {
     }
 
     public MemberDto registerMember(CreateMemberDto createMemberDto) {
-        if (!isEmailValid(createMemberDto.getEmail())) {
-            serviceLogger.error("Not a proper email address to register a member !");
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        }
-        serviceLogger.info("Proper email address introduced.");
+        emailValidation(createMemberDto);
 
         Member member = memberMapper.toMember(createMemberDto);
         serviceLogger.info("Member getting registered.");
@@ -36,7 +32,20 @@ public class MemberService {
         return memberMapper.toDto(member);
     }
 
-    private boolean isEmailValid(String email) {
+    private void emailValidation(CreateMemberDto createMemberDto) {
+        if (!isEmailFormValid(createMemberDto.getEmail())) {
+            serviceLogger.error("Not a proper email address to register a member !");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+        serviceLogger.info("Proper email address introduced.");
+        if (memberRepository.emailAlreadyExists(createMemberDto.getEmail())) {
+            serviceLogger.error("Please provide another email address to register a member, this one is already used !");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+        serviceLogger.info("New email address introduced.");
+    }
+
+    private boolean isEmailFormValid(String email) {
         String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\." +
                 "[a-zA-Z0-9_+&*-]+)*@" +
                 "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
