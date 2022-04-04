@@ -6,7 +6,7 @@ import com.bookworms.digibooky.rental.api.dto.CreateRentalDto;
 import com.bookworms.digibooky.rental.api.dto.RentalDto;
 import com.bookworms.digibooky.rental.domain.Rental;
 import com.bookworms.digibooky.user.domain.Member;
-import com.bookworms.digibooky.user.service.UserRepository;
+import com.bookworms.digibooky.user.domain.UserRepository;
 import org.springframework.stereotype.Component;
 
 @Component

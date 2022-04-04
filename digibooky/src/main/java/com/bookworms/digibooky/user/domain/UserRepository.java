@@ -1,7 +1,5 @@
-package com.bookworms.digibooky.user.service;
+package com.bookworms.digibooky.user.domain;
 
-import com.bookworms.digibooky.user.domain.Librarian;
-import com.bookworms.digibooky.user.domain.Member;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
