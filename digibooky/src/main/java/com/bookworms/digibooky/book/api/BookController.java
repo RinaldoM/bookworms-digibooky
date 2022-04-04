@@ -41,6 +41,10 @@ public class BookController {
     public List<BookDto> searchBooksThatContainsTitle(@PathVariable String title){
         return bookService.searchBooksThatContainsTitle(title);
     }
-
+    @GetMapping(path="author/{author}" , produces ="application/json")
+    @ResponseStatus(HttpStatus.OK)
+    public List<BookDto> searchBooksThatContainsAuthor(@PathVariable String author){
+        return bookService.searchBooksThatContainsAuthor(author);
+    }
 
 }

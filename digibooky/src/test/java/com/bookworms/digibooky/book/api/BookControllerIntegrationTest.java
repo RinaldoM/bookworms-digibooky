@@ -157,4 +157,32 @@ class BookControllerIntegrationTest {
                 new Book("100", "HarryPotter", "JK", "Rowling", "A book about teen wizards")));
         Assertions.assertThat(List.of(result)).hasSameElementsAs(expectedList);
     }
+
+    @Test
+    void getAllBooks_SearchBooksByAuthor_BooksShownCorrectly() {
+        List<Book> bookList = Lists.newArrayList(
+                new Book("10", "HarryPotter", "JK", "Rowling", "A book about teen wizards"),
+                new Book("100", "HarryPotter", "JK", "Rowling", "A book about teen wizards"),
+                new Book("20", "GameOfThrone", "GeorgeRR", "Martin", "A book about pissed off families"));
+
+        bookList.forEach(book -> bookRepository.save(book));
+
+        BookDto[] result = RestAssured
+                .given()
+                .port(port)
+                .when()
+                .accept(JSON)
+                .get("/books/author/row")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK.value())
+                .extract()
+                .as(BookDto[].class);
+
+        List<BookDto> expectedList = bookMapper.toDto(Lists.newArrayList(
+        new Book("10", "HarryPotter", "JK", "Rowling", "A book about teen wizards"),
+                new Book("100", "HarryPotter", "JK", "Rowling", "A book about teen wizards")));
+        Assertions.assertThat(List.of(result)).hasSameElementsAs(expectedList);
+    }
+
 }

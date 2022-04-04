@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Locale;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,6 +32,8 @@ public class BookService {
     }
 
     public List<BookDto> searchBooksThatContainsIsbn(String isbn) {
+        serviceLogger.info("Showing all books to the user that contains " + isbn + " in the ISBN.");
+
         return bookMapper.toDto(bookRepository.getAll())
                 .stream()
                 .filter(bookDto -> bookDto.getIsbn().contains(isbn))
@@ -40,9 +41,20 @@ public class BookService {
     }
 
     public List<BookDto> searchBooksThatContainsTitle(String title) {
+        serviceLogger.info("Showing all books to the user that contains '" + title + "' in the title.");
+
         return bookMapper.toDto(bookRepository.getAll())
                 .stream()
                 .filter(bookDto -> bookDto.getTitle().toLowerCase().contains(title.toLowerCase()))
+                .collect(Collectors.toList());
+    }
+
+    public List<BookDto> searchBooksThatContainsAuthor(String author) {
+        serviceLogger.info("Showing all books to the user that contains '" + author + "' in the author's name.");
+
+        return bookMapper.toDto(bookRepository.getAll())
+                .stream()
+                .filter(bookDto -> bookDto.authorsFullName().toLowerCase().contains(author.toLowerCase()))
                 .collect(Collectors.toList());
     }
 }
