@@ -1,7 +1,9 @@
 package com.bookworms.digibooky.users.service;
 
 import com.bookworms.digibooky.users.api.dto.CreateMemberDto;
+import com.bookworms.digibooky.users.api.dto.LibrarianDto;
 import com.bookworms.digibooky.users.api.dto.MemberDto;
+import com.bookworms.digibooky.users.domain.Librarian;
 import com.bookworms.digibooky.users.domain.Member;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,12 +17,19 @@ import java.util.regex.Pattern;
 public class UserService {
 
     Logger serviceLogger = LoggerFactory.getLogger(UserService.class);
-    private final UserMapper memberMapper;
-    private final UserRepository memberRepository;
+    private final UserMapper userMapper;
+    private final UserRepository userRepository;
 
-    public UserService(UserMapper memberMapper, UserRepository memberRepository) {
-        this.memberMapper = memberMapper;
-        this.memberRepository = memberRepository;
+    public UserService(UserMapper userMapper, UserRepository userRepository) {
+        this.userMapper = userMapper;
+        this.userRepository = userRepository;
+    }
+
+    public LibrarianDto registerLibrarian(LibrarianDto librarianDto) {
+        Librarian librarian = userMapper.toLibrarian(librarianDto);
+        userRepository.saveLibrarian(librarian);
+        return userMapper.toLibrarianDto(librarian);
+
     }
 
     public MemberDto registerMember(CreateMemberDto createMemberDto) {
@@ -29,10 +38,10 @@ public class UserService {
         validateAndCheckLoggingMessage(isEmptyNullSafe(createMemberDto.getLastName()), "No last name filled in to register a member !", "Proper last name introduced.");
         validateAndCheckLoggingMessage(isEmptyNullSafe(createMemberDto.getCity()), "No city filled in to register a member !", "Proper city introduced.");
 
-        Member member = memberMapper.toMember(createMemberDto);
+        Member member = userMapper.toMember(createMemberDto);
         serviceLogger.info("Member getting registered.");
-        memberRepository.saveMember(member);
-        return memberMapper.toMemberDto(member);
+        userRepository.saveMember(member);
+        return userMapper.toMemberDto(member);
     }
 
     private void validateAndCheckLoggingMessage(boolean condition, String errorMessage, String confirmationMessage) {
@@ -49,7 +58,7 @@ public class UserService {
 
     private void emailValidation(CreateMemberDto createMemberDto) {
         validateAndCheckLoggingMessage(!isEmailFormValid(createMemberDto.getEmail()), "Not a proper email address to register a member !", "Proper email address introduced.");
-        validateAndCheckLoggingMessage(memberRepository.emailAlreadyExists(createMemberDto.getEmail()), "Please provide another email address to register a member, this one is already used !", "New email address introduced.");
+        validateAndCheckLoggingMessage(userRepository.emailAlreadyExists(createMemberDto.getEmail()), "Please provide another email address to register a member, this one is already used !", "New email address introduced.");
     }
 
     private boolean isEmailFormValid(String email) {
@@ -67,6 +76,6 @@ public class UserService {
 
     private void inssValidation(CreateMemberDto createMemberDto) {
         validateAndCheckLoggingMessage(isEmptyNullSafe(createMemberDto.getInss()), "No inss filled in to register a member !", "Proper inss number introduced.");
-        validateAndCheckLoggingMessage(memberRepository.inssAlreadyExists(createMemberDto.getInss()), "Please provide another inss number to register a member, this one is already used !", "New inss number introduced.");
+        validateAndCheckLoggingMessage(userRepository.inssAlreadyExists(createMemberDto.getInss()), "Please provide another inss number to register a member, this one is already used !", "New inss number introduced.");
     }
 }

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserMapper {
     Logger logger = LoggerFactory.getLogger(UserMapper.class);
+
     public MemberDto toMemberDto(Member member) {
         return new MemberDto(
                 member.getId(),
@@ -23,7 +24,6 @@ public class UserMapper {
                 member.getPostalCode(),
                 member.getCity());
     }
-
 
 
     public Member toMember(CreateMemberDto createMemberDto) {
@@ -44,5 +44,13 @@ public class UserMapper {
                 librarian.getLastName(),
                 librarian.getFirstName(),
                 librarian.getEmail());
+    }
+
+    public Librarian toLibrarian(LibrarianDto librarianDto) {
+        return new Librarian(
+                librarianDto.getLastName(),
+                librarianDto.getFirstName(),
+                librarianDto.getEmail()
+        );
     }
 }
