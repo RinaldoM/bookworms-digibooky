@@ -27,6 +27,7 @@ public class UserService {
 
     public LibrarianDto registerLibrarian(LibrarianDto librarianDto) {
         Librarian librarian = userMapper.toLibrarian(librarianDto);
+        serviceLogger.info("Librarian getting created.");
         userRepository.saveLibrarian(librarian);
         return userMapper.toLibrarianDto(librarian);
 
