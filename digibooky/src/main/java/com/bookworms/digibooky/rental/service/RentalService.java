@@ -42,4 +42,8 @@ public class RentalService {
         return rentalMapper.toDto(rental);
     }
 
+
+
+
+
 }

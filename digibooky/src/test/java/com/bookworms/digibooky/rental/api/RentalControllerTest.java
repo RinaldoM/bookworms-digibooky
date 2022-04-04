@@ -155,7 +155,6 @@ class RentalControllerTest {
                 .delete("/rentals/2")
                 .then()
                 .assertThat()
-                .statusCode(HttpStatus.BAD_REQUEST.value());
-
+                .statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
     }
 }
