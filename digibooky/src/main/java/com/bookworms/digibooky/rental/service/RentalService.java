@@ -1,6 +1,7 @@
 package com.bookworms.digibooky.rental.service;
 
 import com.bookworms.digibooky.rental.api.dto.CreateRentalDto;
+import com.bookworms.digibooky.rental.api.dto.RentalDto;
 import com.bookworms.digibooky.rental.domain.Rental;
 import com.bookworms.digibooky.rental.domain.RentalRepository;
 import org.slf4j.Logger;
@@ -14,7 +15,6 @@ public class RentalService {
     private RentalRepository rentalRepository;
     private RentalMapper rentalMapper;
     private final Logger serviceLogger = LoggerFactory.getLogger(RentalService.class);
-
 
     public RentalService(RentalRepository rentalRepository, RentalMapper rentalMapper) {
         this.rentalRepository = rentalRepository;
@@ -33,4 +33,13 @@ public class RentalService {
 
         return createRental;
     }
+
+    public RentalDto returnRental(String rentalId) {
+        Rental rental = rentalRepository.getRentalById(rentalId);
+        rental.getBook().changeRentedState();
+        rentalRepository.removeRental(rental);
+        serviceLogger.info("The book " + rental.getBook().getTitle() + " is returned by " + rental.getMember().getFirstName()+" "+rental.getMember().getLastName()+".");
+        return rentalMapper.toDto(rental);
+    }
+
 }

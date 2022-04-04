@@ -17,4 +17,13 @@ public class RentalRepository {
     public void addRental(Rental rental) {
         rentalsById.put(rental.getRentalId(), rental);
     }
+
+    public Rental getRentalById(String rentalId) {
+        return rentalsById.get(rentalId);
+    }
+
+    public void removeRental(Rental rental) {
+        rentalsById.remove(rental.getRentalId());
+    }
+
 }
