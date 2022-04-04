@@ -50,4 +50,23 @@ class MemberControllerTest {
         Assertions.assertThat(actualMemberDto.getPostalCode()).isEqualTo(expectedMemberDto.getPostalCode());
         Assertions.assertThat(actualMemberDto.getCity()).isEqualTo(expectedMemberDto.getCity());
     }
+
+    @Test
+    void givenImproperEmail_WhenRegisterMember_ThenThrowsIllegalArgumentException() {
+        Member expectedMember = new Member("66.02.06-203.33","Jeremy", "Alen", "wrongEmailAdress", "Switchfully", "3", 3454, " KarelDeGrote");
+        //  WHEN
+        RestAssured
+                .given()
+                .port(port)
+                .body(expectedMember)
+                .contentType(ContentType.JSON)
+                .when()
+                .accept(ContentType.JSON)
+                .post("/members")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST.value());
+    }
+
+
 }
