@@ -98,5 +98,100 @@ class MemberControllerTest {
                 .statusCode(HttpStatus.BAD_REQUEST.value());
     }
 
+    @Test
+    void givenNullEmail_WhenRegisterMember_ThenHttpStatusBadRequest() {
+        Member expectedMember = new Member("66.02.06-203.33","Jeremy", "Alen", null, "Switchfully", "3", 3454, " KarelDeGrote");
+        //  WHEN
+        RestAssured
+                .given()
+                .port(port)
+                .body(expectedMember)
+                .contentType(ContentType.JSON)
+                .when()
+                .accept(ContentType.JSON)
+                .post("/members")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @Test
+    void givenEmptyInss_WhenRegisterMember_ThenHttpStatusBadRequest() {
+        Member expectedMember = new Member("","Jeremy", "Alen", "alen.jeremy@awesomeness.great", "Switchfully", "3", 3454, " KarelDeGrote");
+        //  WHEN
+        RestAssured
+                .given()
+                .port(port)
+                .body(expectedMember)
+                .contentType(ContentType.JSON)
+                .when()
+                .accept(ContentType.JSON)
+                .post("/members")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @Test
+    void givenNotUniqueInss_WhenRegisterMember_ThenHttpStatusBadRequest() {
+        Member firstMember = new Member("66.02.06-203.33","Jeremy", "Alen", "alen.jeremy@awesomeness.great", "Switchfully", "3", 3454, "KarelDeGrote");
+        Member secondMember = new Member("66.02.06-203.33","Herbert", "Coenen", "alen.jeremy@digibooky.great", "Switchfully", "3", 3454, "KarelMarx");
+
+        RestAssured
+                .given()
+                .port(port)
+                .body(firstMember)
+                .contentType(ContentType.JSON)
+                .when()
+                .accept(ContentType.JSON)
+                .post("/members");
+
+        //  WHEN
+        RestAssured
+                .given()
+                .port(port)
+                .body(secondMember)
+                .contentType(ContentType.JSON)
+                .when()
+                .accept(ContentType.JSON)
+                .post("/members")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @Test
+    void givenEmptyLastName_WhenRegisterMember_ThenHttpStatusBadRequest() {
+        Member expectedMember = new Member("66.02.06-203.33","Jeremy", "", "alen.jeremy@awesomeness.great", "Switchfully", "3", 3454, " KarelDeGrote");
+        //  WHEN
+        RestAssured
+                .given()
+                .port(port)
+                .body(expectedMember)
+                .contentType(ContentType.JSON)
+                .when()
+                .accept(ContentType.JSON)
+                .post("/members")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @Test
+    void givenEmptyCity_WhenRegisterMember_ThenHttpStatusBadRequest() {
+        Member expectedMember = new Member("66.02.06-203.33","Jeremy", "Alen", "alen.jeremy@awesomeness.great", "Switchfully", "3", 3454, "");
+        //  WHEN
+        RestAssured
+                .given()
+                .port(port)
+                .body(expectedMember)
+                .contentType(ContentType.JSON)
+                .when()
+                .accept(ContentType.JSON)
+                .post("/members")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST.value());
+    }
 
 }

@@ -20,6 +20,11 @@ public class MemberRepository {
 
     public boolean emailAlreadyExists(String email) {
         return membersById.values().stream()
-                .anyMatch(member -> member.getEmail().equals(email));
+                .anyMatch(member -> member.getEmail().equalsIgnoreCase(email));
+    }
+
+    public boolean inssAlreadyExists(String inss) {
+        return membersById.values().stream()
+                .anyMatch(member -> member.getInss().equals(inss));
     }
 }
