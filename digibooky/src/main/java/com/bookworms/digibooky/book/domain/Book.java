@@ -6,6 +6,7 @@ public class Book {
     private final String authorFirstName;
     private final String authorLastName;
     private final String shortSummary;
+    private boolean isRented;
 
     public Book(String isbn, String title, String authorFirstName, String authorLastName, String shortSummary) {
         this.isbn = isbn;
@@ -13,6 +14,7 @@ public class Book {
         this.authorFirstName = authorFirstName;
         this.authorLastName = authorLastName;
         this.shortSummary = shortSummary;
+        this.isRented = false;
     }
 
     public String getTitle() {
@@ -35,5 +37,11 @@ public class Book {
         return shortSummary;
     }
 
-  
+    public void changeRentedState() {
+        isRented = !isRented;
+    }
+
+    public boolean getState() {
+        return isRented;
+    }
 }

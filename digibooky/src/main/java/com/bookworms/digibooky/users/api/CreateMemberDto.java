@@ -53,4 +53,6 @@ public class CreateMemberDto {
     public String getCity() {
         return city;
     }
+
+
 }
