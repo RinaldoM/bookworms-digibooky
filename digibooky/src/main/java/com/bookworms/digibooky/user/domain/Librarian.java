@@ -1,16 +1,16 @@
-package com.bookworms.digibooky.users.api.dto;
+package com.bookworms.digibooky.user.domain;
 
 import java.util.UUID;
 
-public class LibrarianDto {
+public class Librarian {
 
-    private String id;
-    private String lastName;
-    private String firstName;
-    private String email;
+    private final String id;
+    private final String lastName;
+    private final String firstName;
+    private final String email;
 
-    public LibrarianDto(String id, String lastName, String firstName, String email) {
-        this.id = id;
+    public Librarian(String lastName, String firstName, String email) {
+        this.id = UUID.randomUUID().toString();
         this.lastName = lastName;
         this.firstName = firstName;
         this.email = email;

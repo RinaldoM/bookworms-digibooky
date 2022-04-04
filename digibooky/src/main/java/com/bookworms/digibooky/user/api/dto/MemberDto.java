@@ -1,17 +1,17 @@
-package com.bookworms.digibooky.users.api.dto;
+package com.bookworms.digibooky.user.api.dto;
 
 import java.util.Objects;
 
 public class MemberDto {
 
-    private String id;
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String streetName;
-    private String streetNumber;
-    private int postalCode;
-    private String city;
+    private final String id;
+    private final String firstName;
+    private final String lastName;
+    private final String email;
+    private final String streetName;
+    private final String streetNumber;
+    private final int postalCode;
+    private final String city;
 
     public String getId() {
         return id;

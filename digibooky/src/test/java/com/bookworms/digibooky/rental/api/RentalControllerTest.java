@@ -6,8 +6,8 @@ import com.bookworms.digibooky.rental.api.dto.CreateRentalDto;
 import com.bookworms.digibooky.rental.domain.Rental;
 import com.bookworms.digibooky.rental.domain.RentalRepository;
 import com.bookworms.digibooky.rental.service.RentalMapper;
-import com.bookworms.digibooky.users.domain.Member;
-import com.bookworms.digibooky.users.service.MemberRepository;
+import com.bookworms.digibooky.user.domain.Member;
+import com.bookworms.digibooky.user.service.UserRepository;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.assertj.core.api.Assertions;
@@ -30,7 +30,7 @@ class RentalControllerTest {
     @Autowired
     private BookRepository bookRepository;
     @Autowired
-    private MemberRepository memberRepository;
+    private UserRepository userRepository;
 
     @Autowired
     private RentalMapper rentalmapper;
@@ -41,7 +41,7 @@ class RentalControllerTest {
         Book book = new Book("1", "JosFons", "Jos", "Fons", "story about JosFons");
         Member member = new Member("121", "Jan", "jan@piet.com", "GenkStad");
         bookRepository.save(book);
-        memberRepository.saveMember(member);
+        userRepository.saveMember(member);
         //when
         CreateRentalDto expectedRental = new CreateRentalDto(member.getId(), book.getIsbn());
 
@@ -71,7 +71,7 @@ class RentalControllerTest {
         Book book = new Book("1", "JosFons", "Jos", "Fons", "story about JosFons");
         Member member = new Member("121", "Jan", "jan@piet.com", "GenkStad");
         bookRepository.save(book);
-        memberRepository.saveMember(member);
+        userRepository.saveMember(member);
         //when
         CreateRentalDto expectedRental = new CreateRentalDto(member.getId(), book.getIsbn());
         Rental rental = rentalmapper.toRental(expectedRental);

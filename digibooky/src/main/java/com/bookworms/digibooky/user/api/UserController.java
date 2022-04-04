@@ -1,9 +1,9 @@
-package com.bookworms.digibooky.users.api;
+package com.bookworms.digibooky.user.api;
 
-import com.bookworms.digibooky.users.api.dto.CreateMemberDto;
-import com.bookworms.digibooky.users.api.dto.LibrarianDto;
-import com.bookworms.digibooky.users.api.dto.MemberDto;
-import com.bookworms.digibooky.users.service.UserService;
+import com.bookworms.digibooky.user.api.dto.CreateMemberDto;
+import com.bookworms.digibooky.user.api.dto.LibrarianDto;
+import com.bookworms.digibooky.user.api.dto.MemberDto;
+import com.bookworms.digibooky.user.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 

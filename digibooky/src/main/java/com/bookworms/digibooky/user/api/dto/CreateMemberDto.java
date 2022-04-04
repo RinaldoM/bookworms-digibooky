@@ -1,15 +1,15 @@
-package com.bookworms.digibooky.users.api.dto;
+package com.bookworms.digibooky.user.api.dto;
 
 public class CreateMemberDto {
 
-    private String inss;
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String streetName;
-    private String streetNumber;
-    private int postalCode;
-    private String city;
+    private final String inss;
+    private final String firstName;
+    private final String lastName;
+    private final String email;
+    private final String streetName;
+    private final String streetNumber;
+    private final int postalCode;
+    private final String city;
 
     public CreateMemberDto(String inss, String firstName, String lastName, String email, String streetName, String streetNumber, int postalCode, String city) {
         this.inss = inss;

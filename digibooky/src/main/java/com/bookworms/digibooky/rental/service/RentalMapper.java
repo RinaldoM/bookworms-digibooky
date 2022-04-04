@@ -4,23 +4,23 @@ import com.bookworms.digibooky.book.domain.Book;
 import com.bookworms.digibooky.book.domain.BookRepository;
 import com.bookworms.digibooky.rental.api.dto.CreateRentalDto;
 import com.bookworms.digibooky.rental.domain.Rental;
-import com.bookworms.digibooky.users.domain.Member;
-import com.bookworms.digibooky.users.service.MemberRepository;
+import com.bookworms.digibooky.user.domain.Member;
+import com.bookworms.digibooky.user.service.UserRepository;
 import org.springframework.stereotype.Component;
 
 @Component
 public class RentalMapper {
-    private BookRepository bookRepository;
-    private MemberRepository memberRepository;
+    private final BookRepository bookRepository;
+    private final UserRepository userRepository;
 
-    public RentalMapper(BookRepository bookRepository, MemberRepository memberRepository) {
+    public RentalMapper(BookRepository bookRepository, UserRepository userRepository) {
         this.bookRepository = bookRepository;
-        this.memberRepository = memberRepository;
+        this.userRepository = userRepository;
     }
 
     public Rental toRental(CreateRentalDto createRental){
         Book book = bookRepository.getBookByIsbn(createRental.getBookIsbn());
-        Member member = memberRepository.getMemberById(createRental.getUserId());
+        Member member = userRepository.getMemberById(createRental.getUserId());
         return new Rental(book,member);
     }
 

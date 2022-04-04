@@ -1,7 +1,7 @@
 package com.bookworms.digibooky.rental.domain;
 
 import com.bookworms.digibooky.book.domain.Book;
-import com.bookworms.digibooky.users.domain.Member;
+import com.bookworms.digibooky.user.domain.Member;
 
 import java.time.LocalDate;
 import java.util.UUID;

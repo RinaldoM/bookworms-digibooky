@@ -1,8 +1,9 @@
-package com.bookworms.digibooky.users.service;
+package com.bookworms.digibooky.user.service;
 
-import com.bookworms.digibooky.users.api.dto.LibrarianDto;
-import com.bookworms.digibooky.users.domain.Librarian;
-import com.bookworms.digibooky.users.domain.Member;
+import com.bookworms.digibooky.user.domain.Librarian;
+import com.bookworms.digibooky.user.domain.Member;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
@@ -10,6 +11,8 @@ import java.util.Map;
 
 @Repository
 public class UserRepository {
+    private final Logger repositoryLogger = LoggerFactory.getLogger(UserRepository.class);
+
     private final Map<String, Member> membersById;
     private final Map<String, Librarian> librariansById;
 
@@ -34,5 +37,14 @@ public class UserRepository {
     public boolean inssAlreadyExists(String inss) {
         return membersById.values().stream()
                 .anyMatch(member -> member.getInss().equals(inss));
+    }
+
+    public Member getMemberById(String memberId) {
+        Member foundMember = membersById.get(memberId);
+        if (foundMember == null) {
+            repositoryLogger.error("No member found for member ID " + memberId);
+            throw new IllegalArgumentException("No member found for member ID " + memberId);
+        }
+        return foundMember;
     }
 }

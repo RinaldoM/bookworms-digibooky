@@ -1,10 +1,10 @@
-package com.bookworms.digibooky.users.service;
+package com.bookworms.digibooky.user.service;
 
-import com.bookworms.digibooky.users.api.dto.CreateMemberDto;
-import com.bookworms.digibooky.users.api.dto.LibrarianDto;
-import com.bookworms.digibooky.users.api.dto.MemberDto;
-import com.bookworms.digibooky.users.domain.Librarian;
-import com.bookworms.digibooky.users.domain.Member;
+import com.bookworms.digibooky.user.api.dto.CreateMemberDto;
+import com.bookworms.digibooky.user.api.dto.LibrarianDto;
+import com.bookworms.digibooky.user.api.dto.MemberDto;
+import com.bookworms.digibooky.user.domain.Librarian;
+import com.bookworms.digibooky.user.domain.Member;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;

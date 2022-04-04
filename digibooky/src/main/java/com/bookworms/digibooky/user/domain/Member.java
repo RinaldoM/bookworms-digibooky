@@ -1,17 +1,17 @@
-package com.bookworms.digibooky.users.domain;
+package com.bookworms.digibooky.user.domain;
 
 import java.util.UUID;
 
 public class Member {
-    private String id;
-    private String inss;
+    private final String id;
+    private final String inss;
     private String firstName;
-    private String lastName;
-    private String email;
+    private final String lastName;
+    private final String email;
     private String streetName;
     private String streetNumber;
     private int postalCode;
-    private String city;
+    private final String city;
 
 
     public Member(String inss, String lastName, String email, String city) {

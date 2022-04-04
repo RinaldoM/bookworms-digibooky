@@ -1,10 +1,10 @@
-package com.bookworms.digibooky.users.api;
+package com.bookworms.digibooky.user.api;
 
-import com.bookworms.digibooky.users.api.dto.LibrarianDto;
-import com.bookworms.digibooky.users.api.dto.MemberDto;
-import com.bookworms.digibooky.users.domain.Librarian;
-import com.bookworms.digibooky.users.domain.Member;
-import com.bookworms.digibooky.users.service.UserMapper;
+import com.bookworms.digibooky.user.api.dto.LibrarianDto;
+import com.bookworms.digibooky.user.api.dto.MemberDto;
+import com.bookworms.digibooky.user.domain.Librarian;
+import com.bookworms.digibooky.user.domain.Member;
+import com.bookworms.digibooky.user.service.UserMapper;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.assertj.core.api.Assertions;
