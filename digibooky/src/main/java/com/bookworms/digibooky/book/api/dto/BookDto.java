@@ -33,6 +33,9 @@ public class BookDto {
         return authorLastName;
     }
 
+    public String authorsFullName(){
+        return authorFirstName + " " + authorLastName;
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -40,6 +43,7 @@ public class BookDto {
         BookDto bookDto = (BookDto) o;
         return Objects.equals(isbn, bookDto.isbn) && Objects.equals(title, bookDto.title) && Objects.equals(authorFirstName, bookDto.authorFirstName) && Objects.equals(authorLastName, bookDto.authorLastName);
     }
+
 
     @Override
     public int hashCode() {
