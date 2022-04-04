@@ -7,6 +7,7 @@ import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
@@ -20,7 +21,8 @@ class MemberControllerTest {
     @LocalServerPort
     private int port;
 
-    private MemberController memberController;
+    @Autowired
+    private MemberMapper memberMapper;
 
     @Test
     void givenMember_WhenRegisterMember_TheReturnMember() {
@@ -42,7 +44,7 @@ class MemberControllerTest {
                 .extract()
                 .as(MemberDto.class);
         //  THEN
-        MemberDto expectedMemberDto = MemberMapper.toDto(expectedMember);
+        MemberDto expectedMemberDto = memberMapper.toDto(expectedMember);
         Assertions.assertThat(actualMemberDto.getId()).isNotBlank();
         Assertions.assertThat(actualMemberDto.getFirstName()).isEqualTo(expectedMemberDto.getFirstName());
         Assertions.assertThat(actualMemberDto.getLastName()).isEqualTo(expectedMemberDto.getLastName());

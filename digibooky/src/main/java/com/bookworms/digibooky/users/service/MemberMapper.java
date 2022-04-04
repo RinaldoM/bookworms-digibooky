@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class MemberMapper {
     Logger logger = LoggerFactory.getLogger(MemberMapper.class);
-    public static MemberDto toDto(Member member) {
+    public MemberDto toDto(Member member) {
         return new MemberDto(
                 member.getId(),
                 member.getFirstName(),
