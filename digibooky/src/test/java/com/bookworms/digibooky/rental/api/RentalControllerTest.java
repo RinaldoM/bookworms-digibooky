@@ -7,7 +7,7 @@ import com.bookworms.digibooky.rental.domain.Rental;
 import com.bookworms.digibooky.rental.domain.RentalRepository;
 import com.bookworms.digibooky.rental.service.RentalMapper;
 import com.bookworms.digibooky.user.domain.Member;
-import com.bookworms.digibooky.user.service.UserRepository;
+import com.bookworms.digibooky.user.domain.UserRepository;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.assertj.core.api.Assertions;

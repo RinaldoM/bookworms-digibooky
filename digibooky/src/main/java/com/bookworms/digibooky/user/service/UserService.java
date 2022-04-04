@@ -5,6 +5,7 @@ import com.bookworms.digibooky.user.api.dto.LibrarianDto;
 import com.bookworms.digibooky.user.api.dto.MemberDto;
 import com.bookworms.digibooky.user.domain.Librarian;
 import com.bookworms.digibooky.user.domain.Member;
+import com.bookworms.digibooky.user.domain.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
