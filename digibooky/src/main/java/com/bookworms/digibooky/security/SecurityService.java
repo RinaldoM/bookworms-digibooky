@@ -1,6 +1,5 @@
 package com.bookworms.digibooky.security;
 
-import com.bookworms.digibooky.user.domain.User;
 import com.bookworms.digibooky.user.domain.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -13,11 +12,11 @@ public class SecurityService {
         this.userRepository = userRepository;
     }
 
-    public Role getRole(String id) {
+    public Role getRoleById(String id) {
         return userRepository.getUserById(id).getRole();
     }
 
-    public boolean validateAuthorization(User user, Feature registerLibrarian) {
-        return user.getRole().containsFeature(registerLibrarian);
+    public boolean validateAuthorization(String id, Feature feature) {
+        return getRoleById(id).containsFeature(feature);
     }
 }
