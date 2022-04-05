@@ -2,10 +2,10 @@ package com.bookworms.digibooky.book.domain;
 
 public class Book {
     private final String isbn;
-    private final String title;
-    private final String authorFirstName;
-    private final String authorLastName;
-    private final String smallSummary;
+    private String title;
+    private String authorFirstName;
+    private String authorLastName;
+    private String smallSummary;
     private boolean isRented;
 
     public Book(String isbn, String title, String authorFirstName, String authorLastName, String smallSummary) {
@@ -35,6 +35,22 @@ public class Book {
 
     public String getSmallSummary() {
         return smallSummary;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setAuthorFirstName(String authorFirstName) {
+        this.authorFirstName = authorFirstName;
+    }
+
+    public void setAuthorLastName(String authorLastName) {
+        this.authorLastName = authorLastName;
+    }
+
+    public void setSmallSummary(String smallSummary) {
+        this.smallSummary = smallSummary;
     }
 
     public void changeRentedState() {

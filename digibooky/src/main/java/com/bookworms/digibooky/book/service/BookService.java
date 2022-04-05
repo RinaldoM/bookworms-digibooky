@@ -1,6 +1,7 @@
 package com.bookworms.digibooky.book.service;
 
 import com.bookworms.digibooky.book.api.dto.BookDto;
+import com.bookworms.digibooky.book.api.dto.UpdateBookDto;
 import com.bookworms.digibooky.book.domain.Book;
 import com.bookworms.digibooky.book.domain.BookRepository;
 import com.bookworms.digibooky.user.api.dto.CreateMemberDto;
@@ -89,5 +90,14 @@ public class BookService {
 
     private boolean isEmptyNullSafe(String string) {
         return string == null || string.isEmpty();
+    }
+
+    public BookDto updateBook(String isbn, UpdateBookDto updateBookDto) {
+        Book foundBook = bookRepository.getBookByIsbn(isbn);
+        foundBook.setTitle(updateBookDto.getTitle());
+        foundBook.setAuthorFirstName(updateBookDto.getAuthorFirstName());
+        foundBook.setAuthorLastName(updateBookDto.getAuthorLastName());
+        foundBook.setSmallSummary(updateBookDto.getSmallSummary());
+        return bookMapper.toDto(foundBook);
     }
 }
