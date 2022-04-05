@@ -1,14 +1,19 @@
 package com.bookworms.digibooky.security;
 
 import com.bookworms.digibooky.user.domain.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class SecurityService {
 
+    private final Logger securityLogger = LoggerFactory.getLogger(SecurityService.class);
     private final UserRepository userRepository;
 
-    public SecurityService(UserRepository userRepository) {
+    private SecurityService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
@@ -17,6 +22,12 @@ public class SecurityService {
     }
 
     public boolean validateAuthorization(String id, Feature feature) {
-        return getRoleById(id).containsFeature(feature);
+        if (!(getRoleById(id).containsFeature(feature))) {
+            securityLogger.error("User " + userRepository.getUserById(id) + " is not authorized!");
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+        securityLogger.info("Authorization confirmed.");
+        return true;
     }
+
 }

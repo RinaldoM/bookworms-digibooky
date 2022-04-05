@@ -8,7 +8,7 @@ import static com.bookworms.digibooky.security.Feature.*;
 
 public enum Role {
     ADMIN(new ArrayList<>(Arrays.asList(
-            VIEW_MEMBER,
+            VIEW_MEMBERS,
             REGISTER_LIBRARIAN,
             REGISTER_BOOK,
             UPDATE_BOOK,

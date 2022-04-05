@@ -1,7 +1,7 @@
 package com.bookworms.digibooky.security;
 
 public enum Feature {
-    VIEW_MEMBER,
+    VIEW_MEMBERS,
     REGISTER_LIBRARIAN,
     REGISTER_BOOK,
     UPDATE_BOOK,

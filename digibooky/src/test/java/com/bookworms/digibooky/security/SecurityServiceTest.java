@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.web.server.ResponseStatusException;
 
 import static com.bookworms.digibooky.security.Feature.REGISTER_BOOK;
 import static com.bookworms.digibooky.security.Feature.REGISTER_LIBRARIAN;
@@ -40,9 +41,9 @@ class SecurityServiceTest {
         //  GIVEN
         Admin admin = new Admin("Dumbledore", "Albus", "GryffindorAllTheWay@Hogward.en");
         userRepository.saveAdmin(admin);
-        Feature permission = REGISTER_LIBRARIAN;
+        Feature authorizedFeature = REGISTER_LIBRARIAN;
         //  WHEN
-        boolean isAuthorized = securityService.validateAuthorization(admin.getId(), REGISTER_LIBRARIAN);
+        boolean isAuthorized = securityService.validateAuthorization(admin.getId(), authorizedFeature);
         //  THEN
         Assertions.assertThat(isAuthorized).isTrue();
     }
@@ -52,9 +53,9 @@ class SecurityServiceTest {
         //  GIVEN
         Librarian librarian = new Librarian("Dumbledore", "Albus", "GryffindorAllTheWay@Hogward.en");
         userRepository.saveLibrarian(librarian);
-        Feature permission = REGISTER_BOOK;
+        Feature authorizedFeature = REGISTER_BOOK;
         //  WHEN
-        boolean isAuthorized = securityService.validateAuthorization(librarian.getId(), REGISTER_BOOK);
+        boolean isAuthorized = securityService.validateAuthorization(librarian.getId(), authorizedFeature);
         //  THEN
         Assertions.assertThat(isAuthorized).isTrue();
     }
@@ -64,11 +65,11 @@ class SecurityServiceTest {
         //  GIVEN
         Librarian librarian = new Librarian("Dumbledore", "Albus", "GryffindorAllTheWay@Hogward.en");
         userRepository.saveLibrarian(librarian);
-        Feature permission = REGISTER_LIBRARIAN;
-        //  WHEN
-        boolean isAuthorized = securityService.validateAuthorization(librarian.getId(), REGISTER_LIBRARIAN);
+        Feature forbiddenFeature = REGISTER_LIBRARIAN;
         //  THEN
-        Assertions.assertThat(isAuthorized).isFalse();
+        Assertions.assertThatExceptionOfType(ResponseStatusException.class).
+                isThrownBy(()->
+                        securityService.validateAuthorization(librarian.getId(), forbiddenFeature));
     }
 
     @Test
@@ -76,10 +77,10 @@ class SecurityServiceTest {
         //  GIVEN
         Member member = new Member("81.08.28","Dumbledore", "Albus", "GryffindorAllTheWay@Hogward.en");
         userRepository.saveMember(member);
-        Feature permission = REGISTER_BOOK;
-        //  WHEN
-        boolean isAuthorized = securityService.validateAuthorization(member.getId(), REGISTER_BOOK);
+        Feature forbiddenFeature = REGISTER_BOOK;
         //  THEN
-        Assertions.assertThat(isAuthorized).isFalse();
+        Assertions.assertThatExceptionOfType(ResponseStatusException.class).
+                isThrownBy(()->
+                        securityService.validateAuthorization(member.getId(), forbiddenFeature));
     }
 }
