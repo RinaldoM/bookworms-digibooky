@@ -60,4 +60,11 @@ public class BookController {
         return bookService.updateBook(isbn, updateBookDto);
     }
 
+    @PutMapping(path = "delete/{isbn}")
+    @ResponseStatus(HttpStatus.OK)
+    public BookDto softDeleteBook(@PathVariable String isbn){
+        return bookService.softDeleteBook(isbn);
+    }
+
+
 }

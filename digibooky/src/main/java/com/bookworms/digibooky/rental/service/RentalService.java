@@ -23,7 +23,7 @@ public class RentalService {
 
     public CreateRentalDto lendABook(CreateRentalDto createRental) {
         Rental rental = rentalMapper.toRental(createRental);
-        if(rental.getBook().getState()){
+        if(rental.getBook().getRentedState()){
             serviceLogger.error("The book is already rented out!");
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }

@@ -100,4 +100,10 @@ public class BookService {
         foundBook.setSmallSummary(updateBookDto.getSmallSummary());
         return bookMapper.toDto(foundBook);
     }
+
+    public BookDto softDeleteBook(String isbn) {
+        Book book = bookRepository.getBookByIsbn(isbn);
+        book.setActive();
+        return bookMapper.toDto(book);
+    }
 }

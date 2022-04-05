@@ -2,7 +2,9 @@ package com.bookworms.digibooky.book.domain;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -30,7 +32,8 @@ public class BookRepository {
         Book foundBook = booksByISBN.get(isbn);
         if (foundBook == null) {
             repositoryLogger.error("No book found for isbn " + isbn);
-            throw new IllegalArgumentException("No book found for isbn " + isbn);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+//            throw new IllegalArgumentException("No book found for isbn " + isbn);
         }
         return foundBook;
     }

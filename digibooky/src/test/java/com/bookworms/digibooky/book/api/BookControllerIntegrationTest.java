@@ -5,6 +5,9 @@ import com.bookworms.digibooky.book.api.dto.UpdateBookDto;
 import com.bookworms.digibooky.book.domain.Book;
 import com.bookworms.digibooky.book.domain.BookRepository;
 import com.bookworms.digibooky.book.service.BookMapper;
+import com.bookworms.digibooky.rental.api.dto.CreateRentalDto;
+import com.bookworms.digibooky.rental.api.dto.RentalDto;
+import com.bookworms.digibooky.rental.domain.Rental;
 import com.bookworms.digibooky.user.api.dto.MemberDto;
 import com.bookworms.digibooky.user.domain.Member;
 import io.restassured.RestAssured;
@@ -100,10 +103,8 @@ class BookControllerIntegrationTest {
                 .get("/books/4")
                 .then()
                 .assertThat()
-                .statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+                .statusCode(HttpStatus.BAD_REQUEST.value());
 
-        Assertions.assertThatThrownBy(() -> bookRepository.getBookByIsbn("4")).isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("No book found for isbn 4");
     }
 
     @Test
@@ -209,6 +210,10 @@ class BookControllerIntegrationTest {
                 .extract()
                 .as(BookDto.class);
         //  THEN
+
+        Assertions.assertThat(bookMapper.toBook(actualBookDto).isActive()).isTrue();
+        Assertions.assertThat(bookMapper.toBook(actualBookDto).getRentedState()).isFalse();
+
         Assertions.assertThat(actualBookDto.getIsbn()).isEqualTo(expectedBook.getIsbn());
         Assertions.assertThat(actualBookDto.getTitle()).isEqualTo(expectedBook.getTitle());
         Assertions.assertThat(actualBookDto.getAuthorFirstName()).isEqualTo(expectedBook.getAuthorFirstName());
@@ -302,5 +307,56 @@ class BookControllerIntegrationTest {
         Assertions.assertThat(updatedBookDto.getAuthorLastName()).isEqualTo(expectedBookDto.getAuthorLastName());
         Assertions.assertThat(updatedBookDto.getSmallSummary()).isEqualTo(expectedBookDto.getSmallSummary());
     }
+
+    @Test
+    void SoftDeleteBook_BookIsSoftDeletedCorrectly() {
+
+        List<Book> bookList = Lists.newArrayList(
+                new Book("1", "HarryPotter", "JK", "Rowling", "A book about teen wizards"),
+                new Book("2", "GameOfThrone", "GeorgeRR", "Martin", "A book about pissed off families"));
+        bookList.forEach(book -> bookRepository.save(book));
+
+        RestAssured
+                .given()
+                .port(port)
+                .contentType(ContentType.JSON)
+                .when()
+                .accept(ContentType.JSON)
+                .put("/books/delete/1")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK.value());
+
+        Assertions.assertThat(bookRepository.getBookByIsbn("1").isActive()).isFalse();
+
+
+    }
+
+    @Test
+    void SoftDeleteBookThatDoesntExist_ReturnErrorMessageHttpBadRequest() {
+
+        List<Book> bookList = Lists.newArrayList(
+                new Book("1", "HarryPotter", "JK", "Rowling", "A book about teen wizards"),
+                new Book("2", "GameOfThrone", "GeorgeRR", "Martin", "A book about pissed off families"));
+        bookList.forEach(book -> bookRepository.save(book));
+
+        RestAssured
+                .given()
+                .port(port)
+                .contentType(ContentType.JSON)
+                .when()
+                .accept(ContentType.JSON)
+                .put("/books/delete/5")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST.value());
+
+
+
+    }
+
+
+
+
 
 }
