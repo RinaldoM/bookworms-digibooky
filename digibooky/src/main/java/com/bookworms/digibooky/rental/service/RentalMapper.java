@@ -30,8 +30,9 @@ public class RentalMapper {
     }
 
     public RentalDto toDto(Rental rental){
-        return new RentalDto(rental.getRentalId(), rental.getBook().getTitle(),rental.getMember().getId());
+        return new RentalDto(rental.getRentalId(),rental.getMember().getId(), rental.getBook().getIsbn());
     }
+
 
     public List<RentalDto> toDto(Collection<Rental> rentals){
         return rentals.stream()
