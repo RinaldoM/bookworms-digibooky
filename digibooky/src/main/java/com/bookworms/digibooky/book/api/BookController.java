@@ -63,7 +63,13 @@ public class BookController {
     @PutMapping(path = "delete/{isbn}")
     @ResponseStatus(HttpStatus.OK)
     public BookDto softDeleteBook(@PathVariable String isbn){
-        return bookService.softDeleteBook(isbn);
+        return bookService.changeActiveState(isbn);
+    }
+
+    @PutMapping(path = "restore/{isbn}")
+    @ResponseStatus(HttpStatus.OK)
+    public BookDto restoreBook(@PathVariable String isbn){
+        return bookService.changeActiveState(isbn);
     }
 
 

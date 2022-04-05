@@ -5,11 +5,6 @@ import com.bookworms.digibooky.book.api.dto.UpdateBookDto;
 import com.bookworms.digibooky.book.domain.Book;
 import com.bookworms.digibooky.book.domain.BookRepository;
 import com.bookworms.digibooky.book.service.BookMapper;
-import com.bookworms.digibooky.rental.api.dto.CreateRentalDto;
-import com.bookworms.digibooky.rental.api.dto.RentalDto;
-import com.bookworms.digibooky.rental.domain.Rental;
-import com.bookworms.digibooky.user.api.dto.MemberDto;
-import com.bookworms.digibooky.user.domain.Member;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.assertj.core.api.Assertions;
@@ -351,6 +346,62 @@ class BookControllerIntegrationTest {
                 .assertThat()
                 .statusCode(HttpStatus.BAD_REQUEST.value());
 
+
+
+    }
+    @Test
+    void SoftDeleteBook_ReturnOnlyBooksThatAreActive() {
+
+        List<Book> bookList = Lists.newArrayList(
+                new Book("1", "HarryPotter", "JK", "Rowling", "A book about teen wizards"),
+                new Book("2", "GameOfThrone", "GeorgeRR", "Martin", "A book about pissed off families"));
+        bookList.forEach(book -> bookRepository.save(book));
+        Book book = bookList.get(0);
+        book.changeActiveState();
+
+        BookDto[] result = RestAssured
+                .given()
+                .port(port)
+                .when()
+                .accept(JSON)
+                .get("/books")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK.value())
+                .extract()
+                .as(BookDto[].class);
+
+        Book newBook = new Book("2", "GameOfThrone", "GeorgeRR", "Martin", "A book about pissed off families");
+        List<BookDto> expectedList = bookMapper.toDto(List.of(newBook));
+
+        Assertions.assertThat(List.of(result)).hasSameElementsAs(expectedList);
+
+
+
+    }
+
+    @Test
+    void RestoreDeletedBook_BookIsRestoredCorrectly() {
+
+        List<Book> bookList = Lists.newArrayList(
+                new Book("1", "HarryPotter", "JK", "Rowling", "A book about teen wizards"),
+                new Book("2", "GameOfThrone", "GeorgeRR", "Martin", "A book about pissed off families"));
+        bookList.forEach(book -> bookRepository.save(book));
+        Book bookByIsbn = bookRepository.getBookByIsbn("1");
+        bookByIsbn.changeActiveState();
+
+        RestAssured
+                .given()
+                .port(port)
+                .contentType(ContentType.JSON)
+                .when()
+                .accept(ContentType.JSON)
+                .put("/books/restore/1")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK.value());
+
+        Assertions.assertThat(bookRepository.getBookByIsbn("1").isActive()).isTrue();
 
 
     }

@@ -155,6 +155,35 @@ class RentalControllerTest {
                 .delete("/rentals/2")
                 .then()
                 .assertThat()
-                .statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+                .statusCode(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @Test
+    void givenIsARentalWithBookThatIsInactive_whenAdded_thenErrorMessage() {
+        //given
+        Book book = new Book("1", "JosFons", "Jos", "Fons", "story about JosFons");
+        Member member = new Member("121", "Jan", "jan@piet.com", "GenkStad");
+        bookRepository.save(book);
+        userRepository.saveMember(member);
+        //when
+        book.changeActiveState();
+        CreateRentalDto expectedRental = new CreateRentalDto(member.getId(), book.getIsbn());
+        Rental rental = rentalmapper.toRental(expectedRental);
+
+        rentalRepository.addRental(rental);
+
+        RestAssured
+                .given()
+                .port(port)
+                .body(expectedRental)
+                .contentType(ContentType.JSON)
+                .when()
+                .accept(ContentType.JSON)
+                .post("/rentals")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST.value());
+        //then
+
     }
 }

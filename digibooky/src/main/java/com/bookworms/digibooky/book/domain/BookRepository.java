@@ -9,6 +9,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Repository
 public class BookRepository {
@@ -25,7 +26,9 @@ public class BookRepository {
     }
 
     public Collection<Book> getAll() {
-        return booksByISBN.values();
+        return booksByISBN.values()
+                .stream()
+                .filter(Book::isActive).collect(Collectors.toList());
     }
 
     public Book getBookByIsbn(String isbn) {

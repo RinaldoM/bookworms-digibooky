@@ -67,7 +67,7 @@ public class Book {
         return isActive;
     }
 
-    public void setActive() {
+    public void changeActiveState() {
         isActive = !isActive;
     }
 
