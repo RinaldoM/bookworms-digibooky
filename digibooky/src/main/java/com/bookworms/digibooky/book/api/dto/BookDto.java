@@ -33,6 +33,10 @@ public class BookDto {
         return authorLastName;
     }
 
+    public String getSmallSummary() {
+        return smallSummary;
+    }
+
     public String authorsFullName(){
         return authorFirstName + " " + authorLastName;
     }
@@ -49,4 +53,5 @@ public class BookDto {
     public int hashCode() {
         return Objects.hash(isbn, title, authorFirstName, authorLastName);
     }
+
 }

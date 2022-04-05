@@ -34,4 +34,8 @@ public class BookRepository {
         }
         return foundBook;
     }
+
+    public void saveBook(Book book) {
+        booksByISBN.put(book.getIsbn(), book);
+    }
 }

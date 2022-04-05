@@ -5,15 +5,15 @@ public class Book {
     private final String title;
     private final String authorFirstName;
     private final String authorLastName;
-    private final String shortSummary;
+    private final String smallSummary;
     private boolean isRented;
 
-    public Book(String isbn, String title, String authorFirstName, String authorLastName, String shortSummary) {
+    public Book(String isbn, String title, String authorFirstName, String authorLastName, String smallSummary) {
         this.isbn = isbn;
         this.title = title;
         this.authorFirstName = authorFirstName;
         this.authorLastName = authorLastName;
-        this.shortSummary = shortSummary;
+        this.smallSummary = smallSummary;
         this.isRented = false;
     }
 
@@ -33,8 +33,8 @@ public class Book {
         return this.isbn;
     }
 
-    public String getShortSummary() {
-        return shortSummary;
+    public String getSmallSummary() {
+        return smallSummary;
     }
 
     public void changeRentedState() {

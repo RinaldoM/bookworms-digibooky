@@ -1,7 +1,10 @@
 package com.bookworms.digibooky.book.service;
 
 import com.bookworms.digibooky.book.api.dto.BookDto;
+import com.bookworms.digibooky.book.domain.Book;
 import com.bookworms.digibooky.book.domain.BookRepository;
+import com.bookworms.digibooky.user.domain.Librarian;
+import org.apache.catalina.mapper.Mapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -56,5 +59,12 @@ public class BookService {
                 .stream()
                 .filter(bookDto -> bookDto.authorsFullName().toLowerCase().contains(author.toLowerCase()))
                 .collect(Collectors.toList());
+    }
+
+    public BookDto registerNewBook(BookDto bookDto) {
+        Book book = bookMapper.toBook(bookDto);
+        serviceLogger.info("New book getting registered.");
+        bookRepository.saveBook(book);
+        return bookMapper.toDto(book);
     }
 }

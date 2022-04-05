@@ -47,4 +47,10 @@ public class BookController {
         return bookService.searchBooksThatContainsAuthor(author);
     }
 
+    @PostMapping(produces = "application/json", consumes = "application/json")
+    @ResponseStatus(HttpStatus.CREATED)
+    public BookDto registerNewBook(@RequestBody BookDto bookDto) {
+        return bookService.registerNewBook(bookDto);
+    }
+
 }

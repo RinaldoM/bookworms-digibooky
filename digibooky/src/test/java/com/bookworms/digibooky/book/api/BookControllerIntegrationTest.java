@@ -4,7 +4,10 @@ import com.bookworms.digibooky.book.api.dto.BookDto;
 import com.bookworms.digibooky.book.domain.Book;
 import com.bookworms.digibooky.book.domain.BookRepository;
 import com.bookworms.digibooky.book.service.BookMapper;
+import com.bookworms.digibooky.user.api.dto.MemberDto;
+import com.bookworms.digibooky.user.domain.Member;
 import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.Test;
@@ -183,6 +186,32 @@ class BookControllerIntegrationTest {
         new Book("10", "HarryPotter", "JK", "Rowling", "A book about teen wizards"),
                 new Book("100", "HarryPotter", "JK", "Rowling", "A book about teen wizards")));
         Assertions.assertThat(List.of(result)).hasSameElementsAs(expectedList);
+    }
+
+    @Test
+    void givenBook_WhenRegisterBook_TheReturnBook() {
+        //  GIVEN
+        BookDto expectedBook = new BookDto("10", "HarryPotter", "JK", "Rowling", "A book about teen wizards");
+        //  WHEN
+
+        BookDto actualBookDto = RestAssured
+                .given()
+                .port(port)
+                .body(expectedBook)
+                .contentType(ContentType.JSON)
+                .when()
+                .accept(ContentType.JSON)
+                .post("/books")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.CREATED.value())
+                .extract()
+                .as(BookDto.class);
+        //  THEN
+        Assertions.assertThat(actualBookDto.getIsbn()).isEqualTo(expectedBook.getIsbn());
+        Assertions.assertThat(actualBookDto.getTitle()).isEqualTo(expectedBook.getTitle());
+        Assertions.assertThat(actualBookDto.getAuthorFirstName()).isEqualTo(expectedBook.getAuthorFirstName());
+        Assertions.assertThat(actualBookDto.getAuthorLastName()).isEqualTo(expectedBook.getAuthorLastName());
     }
 
 }
