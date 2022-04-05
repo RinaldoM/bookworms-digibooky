@@ -20,6 +20,7 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.annotation.DirtiesContext;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -113,7 +114,6 @@ class RentalControllerTest {
 
         RentalDto expectedRental = rentalmapper.toDto(rental);
 
-
         RentalDto actualRental = RestAssured
                 .given()
                 .port(port)
@@ -129,7 +129,6 @@ class RentalControllerTest {
                 .as(RentalDto.class);
         //then
         Assertions.assertThat(expectedRental).isEqualTo(actualRental);
-        //add test check if bookState is false
     }
 
 
@@ -255,4 +254,45 @@ class RentalControllerTest {
                 .assertThat()
                 .statusCode(HttpStatus.BAD_REQUEST.value());
     }
+
+    @Test
+    void showRentalsThatAreOverdue_RentalsAreShownCorrectly() {
+        //given
+        Book book1 = new Book("1", "JosFons", "Jos", "Fons", "story about JosFons");
+        Book book2 = new Book("2", "FonsJos", "Fons", "Jos", "story about FonsJos");
+        Book book3 = new Book("3", "Stay Away", "Get", "Lost", "don't show up in test results please");
+        Member member = new Member("121", "Jan", "jan@piet.com", "GenkStad");
+        bookRepository.save(book1);
+        bookRepository.save(book2);
+        bookRepository.save(book3);
+        userRepository.saveMember(member);
+
+        CreateRentalDto expectedRental1 = new CreateRentalDto(member.getId(), book1.getIsbn());
+        CreateRentalDto expectedRental2 = new CreateRentalDto(member.getId(), book2.getIsbn());
+        Rental rental1 = rentalmapper.toRental(expectedRental1);
+
+        rental1.setDueDate(LocalDate.of(2000,2,2));
+        Rental rental2 = rentalmapper.toRental(expectedRental2);
+        rentalRepository.addRental(rental1);
+        rentalRepository.addRental(rental2);
+        //when
+        List<Rental> expectedRentalList = Lists.newArrayList(rental1);
+
+        RentalDto[] actualRentalList = RestAssured
+                .given()
+                .port(port)
+                .when()
+                .accept(ContentType.JSON)
+                .get("/rentals/overdue")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK.value())
+                .extract()
+                .as(RentalDto[].class);
+        //then
+
+        Assertions.assertThat(List.of(actualRentalList)).hasSameElementsAs(rentalmapper.toDto(expectedRentalList));
+    }
+
+
 }

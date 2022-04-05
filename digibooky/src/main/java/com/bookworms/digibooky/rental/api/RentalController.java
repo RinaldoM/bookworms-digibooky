@@ -34,4 +34,11 @@ public class RentalController {
     public List<RentalDto> getRentalsOfMember(@PathVariable String memberId) {
         return rentalService.getRentalsOfMember(memberId);
     }
+
+
+    @GetMapping(path = "/overdue", produces = "application/json")
+    @ResponseStatus(HttpStatus.OK)
+    public List<RentalDto> getOverdueRentals() {
+        return rentalService.getOverdueRentals();
+    }
 }

@@ -10,7 +10,7 @@ public class Rental {
     private final String rentalId;
     private final Book book;
     private final Member member;
-    private final LocalDate dueDate;
+    private  LocalDate dueDate;
 
     public Rental(Book book, Member member) {
         this.rentalId = UUID.randomUUID().toString();
@@ -33,5 +33,9 @@ public class Rental {
 
     public LocalDate getDueDate() {
         return dueDate;
+    }
+
+    public void setDueDate(LocalDate dueDate) {
+        this.dueDate = dueDate;
     }
 }

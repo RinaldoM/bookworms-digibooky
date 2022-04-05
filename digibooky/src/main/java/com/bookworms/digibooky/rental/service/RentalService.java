@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -64,4 +65,12 @@ public class RentalService {
         }
         return filterRentalsOfMember(memberId);
     }
+
+    public List<RentalDto> getOverdueRentals() {
+        return rentalRepository.getAll().stream()
+                .filter(rental -> LocalDate.now().isAfter(rental.getDueDate()))
+                .map(rentalMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
 }
