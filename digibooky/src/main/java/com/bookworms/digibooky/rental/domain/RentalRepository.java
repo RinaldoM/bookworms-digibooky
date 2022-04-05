@@ -23,7 +23,7 @@ public class RentalRepository {
     }
 
     public Rental getRentalById(String rentalId) {
-        var foundRental = rentalsById.get(rentalId);
+        Rental foundRental = rentalsById.get(rentalId);
         if(foundRental == null){
             repositoryLogger.error("No rental could be found for id " + rentalId);
             throw new IllegalArgumentException("No rental could be found for id " + rentalId);
