@@ -12,12 +12,15 @@ import com.bookworms.digibooky.user.domain.UserRepository;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.assertj.core.api.Assertions;
+import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.annotation.DirtiesContext;
+
+import java.util.List;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
@@ -185,5 +188,41 @@ class RentalControllerTest {
                 .statusCode(HttpStatus.BAD_REQUEST.value());
         //then
 
+    }
+
+    @Test
+    void showRentalsOfMember_RentalsAreShownCorrectly() {
+        //given
+        Book book1 = new Book("1", "JosFons", "Jos", "Fons", "story about JosFons");
+        Book book2 = new Book("2", "FonsJos", "Fons", "Jos", "story about FonsJos");
+        Book book3 = new Book("3", "Stay Away", "Get", "Lost", "don't show up in test results please");
+        Member member = new Member("121", "Jan", "jan@piet.com", "GenkStad");
+        bookRepository.save(book1);
+        bookRepository.save(book2);
+        bookRepository.save(book3);
+        userRepository.saveMember(member);
+        //when
+        CreateRentalDto expectedRental1 = new CreateRentalDto(member.getId(), book1.getIsbn());
+        CreateRentalDto expectedRental2 = new CreateRentalDto(member.getId(), book2.getIsbn());
+
+        rentalRepository.addRental(rentalmapper.toRental(expectedRental1));
+        rentalRepository.addRental(rentalmapper.toRental(expectedRental2));
+
+        List<Rental> expectedRentalList = Lists.newArrayList(rentalmapper.toRental(expectedRental1), rentalmapper.toRental(expectedRental2));
+
+        RentalDto[] actualRentalList = RestAssured
+                .given()
+                .port(port)
+                .when()
+                .accept(ContentType.JSON)
+                .get("/rentals/121")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK.value())
+                .extract()
+                .as(RentalDto[].class);
+        //then
+
+        Assertions.assertThat(List.of(actualRentalList)).hasSameElementsAs(rentalmapper.toDto(expectedRentalList));
     }
 }
