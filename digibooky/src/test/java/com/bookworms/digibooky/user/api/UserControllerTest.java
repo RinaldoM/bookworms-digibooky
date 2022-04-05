@@ -2,12 +2,14 @@ package com.bookworms.digibooky.user.api;
 
 import com.bookworms.digibooky.user.api.dto.LibrarianDto;
 import com.bookworms.digibooky.user.api.dto.MemberDto;
+import com.bookworms.digibooky.user.domain.Admin;
 import com.bookworms.digibooky.user.domain.Librarian;
 import com.bookworms.digibooky.user.domain.Member;
 import com.bookworms.digibooky.user.domain.UserRepository;
 import com.bookworms.digibooky.user.service.UserMapper;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
+import io.restassured.http.Header;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -222,12 +224,15 @@ class UserControllerTest {
         @Test
         void givenAdmin_WhenRegisterLibrarian_ReturnLibrarianDto() {
             //  GIVEN
+            Admin admin = new Admin("Dumbledore", "Albus", "GryffindorAllTheWay@Hogward.en");
+            userRepository.saveAdmin(admin);
             Librarian expectedLibrarian = new Librarian("The grey", "Gandalf", "Gandalf.TheGrey@TheLordOfThe.Ring");
             //  WHEN
 
             LibrarianDto actualLibrarianDto = RestAssured
                     .given()
                     .port(port)
+                    .header("authorizationId", admin.getId())
                     .body(expectedLibrarian)
                     .contentType(ContentType.JSON)
                     .when()
