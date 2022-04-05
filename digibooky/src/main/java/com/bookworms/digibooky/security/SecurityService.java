@@ -23,11 +23,10 @@ public class SecurityService {
 
     public boolean validateAuthorization(String id, Feature feature) {
         if (!(getRoleById(id).containsFeature(feature))) {
-            securityLogger.error("User " + userRepository.getUserById(id) + " is not authorized!");
+            securityLogger.error("User with id" + id + " is not authorized to " + feature.toString() + "!");
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }
         securityLogger.info("Authorization confirmed.");
         return true;
     }
-
 }
