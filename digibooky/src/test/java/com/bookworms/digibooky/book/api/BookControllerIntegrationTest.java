@@ -1,6 +1,7 @@
 package com.bookworms.digibooky.book.api;
 
 import com.bookworms.digibooky.book.api.dto.BookDto;
+import com.bookworms.digibooky.book.api.dto.UpdateBookDto;
 import com.bookworms.digibooky.book.domain.Book;
 import com.bookworms.digibooky.book.domain.BookRepository;
 import com.bookworms.digibooky.book.service.BookMapper;
@@ -269,6 +270,37 @@ class BookControllerIntegrationTest {
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @Test
+    void updateBook_BookIsUpdatedCorrectly() {
+
+        List<Book> bookList = Lists.newArrayList(
+                new Book("1", "HarryPotter", "JK", "Rowling", "A book about teen wizards"),
+                new Book("2", "GameOfThrone", "GeorgeRR", "Martin", "A book about pissed off families"));
+        bookList.forEach(book -> bookRepository.save(book));
+
+        UpdateBookDto expectedBookDto = new UpdateBookDto( "HairyPotter", "JayKay", "Coowling", "A book about teen hairy wizards");
+
+        BookDto updatedBookDto = RestAssured
+                .given()
+                .port(port)
+                .body(expectedBookDto)
+                .contentType(ContentType.JSON)
+                .when()
+                .accept(ContentType.JSON)
+                .put("/books/1")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK.value())
+                .extract()
+                .as(BookDto.class);
+
+        Assertions.assertThat(updatedBookDto.getIsbn()).isEqualTo("1");
+        Assertions.assertThat(updatedBookDto.getTitle()).isEqualTo(expectedBookDto.getTitle());
+        Assertions.assertThat(updatedBookDto.getAuthorFirstName()).isEqualTo(expectedBookDto.getAuthorFirstName());
+        Assertions.assertThat(updatedBookDto.getAuthorLastName()).isEqualTo(expectedBookDto.getAuthorLastName());
+        Assertions.assertThat(updatedBookDto.getSmallSummary()).isEqualTo(expectedBookDto.getSmallSummary());
     }
 
 }

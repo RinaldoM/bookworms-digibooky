@@ -1,6 +1,7 @@
 package com.bookworms.digibooky.book.api;
 
 import com.bookworms.digibooky.book.api.dto.BookDto;
+import com.bookworms.digibooky.book.api.dto.UpdateBookDto;
 import com.bookworms.digibooky.book.service.BookService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -51,6 +52,12 @@ public class BookController {
     @ResponseStatus(HttpStatus.CREATED)
     public BookDto registerNewBook(@RequestBody BookDto bookDto) {
         return bookService.registerNewBook(bookDto);
+    }
+
+    @PutMapping(path = "/{isbn}", produces = "application/json", consumes = "application/json")
+    @ResponseStatus(HttpStatus.OK)
+    public BookDto updateBook(@PathVariable String isbn, @RequestBody UpdateBookDto updateBookDto) {
+        return bookService.updateBook(isbn, updateBookDto);
     }
 
 }
