@@ -9,6 +9,10 @@ import com.bookworms.digibooky.user.domain.Member;
 import com.bookworms.digibooky.user.domain.UserRepository;
 import org.springframework.stereotype.Component;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Component
 public class RentalMapper {
     private final BookRepository bookRepository;
@@ -27,6 +31,12 @@ public class RentalMapper {
 
     public RentalDto toDto(Rental rental){
         return new RentalDto(rental.getRentalId(), rental.getBook().getTitle(),rental.getMember().getId());
+    }
+
+    public List<RentalDto> toDto(Collection<Rental> rentals){
+        return rentals.stream()
+                .map(this::toDto)
+                .collect(Collectors.toList());
     }
 
 }

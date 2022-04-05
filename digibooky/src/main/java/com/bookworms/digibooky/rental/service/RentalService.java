@@ -10,10 +10,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class RentalService {
-    private RentalRepository rentalRepository;
-    private RentalMapper rentalMapper;
+    private final RentalRepository rentalRepository;
+    private final RentalMapper rentalMapper;
     private final Logger serviceLogger = LoggerFactory.getLogger(RentalService.class);
 
     public RentalService(RentalRepository rentalRepository, RentalMapper rentalMapper) {
@@ -47,4 +50,18 @@ public class RentalService {
     }
 
 
+    private List<RentalDto> filterRentalsOfMember(String memberId) {
+        return rentalRepository.getAll().stream()
+                .filter(rental -> rental.getMember().getId().equals(memberId))
+                .map(rentalMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
+    public List<RentalDto> getRentalsOfMember(String memberId) {
+        if (filterRentalsOfMember(memberId) == null || filterRentalsOfMember(memberId).size() == 0) {
+            serviceLogger.error("No rentals found for member with id " + memberId);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+        return filterRentalsOfMember(memberId);
+    }
 }
