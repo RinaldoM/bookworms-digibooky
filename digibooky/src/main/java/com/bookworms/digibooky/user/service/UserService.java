@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Collection;
 import java.util.regex.Pattern;
 
 @Service
@@ -79,5 +80,9 @@ public class UserService {
     private void inssValidation(CreateMemberDto createMemberDto) {
         validateAndCheckLoggingMessage(isEmptyNullSafe(createMemberDto.getInss()), "No inss filled in to register a member !", "Proper inss number introduced.");
         validateAndCheckLoggingMessage(userRepository.inssAlreadyExists(createMemberDto.getInss()), "Please provide another inss number to register a member, this one is already used !", "New inss number introduced.");
+    }
+
+    public Collection<MemberDto> viewMembers() {
+        return userMapper.toMemberDto(userRepository.getAllMembers());
     }
 }
