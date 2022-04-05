@@ -9,6 +9,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import java.util.Collection;
+import java.util.stream.Collectors;
+
 @Component
 public class UserMapper {
     Logger logger = LoggerFactory.getLogger(UserMapper.class);
@@ -52,5 +55,11 @@ public class UserMapper {
                 librarianDto.getFirstName(),
                 librarianDto.getEmail()
         );
+    }
+
+    public Collection<MemberDto> toMemberDto(Collection<Member> allMembers) {
+        return allMembers.stream()
+                .map(this::toMemberDto)
+                .collect(Collectors.toList());
     }
 }

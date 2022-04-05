@@ -4,6 +4,7 @@ import com.bookworms.digibooky.user.api.dto.LibrarianDto;
 import com.bookworms.digibooky.user.api.dto.MemberDto;
 import com.bookworms.digibooky.user.domain.Librarian;
 import com.bookworms.digibooky.user.domain.Member;
+import com.bookworms.digibooky.user.domain.UserRepository;
 import com.bookworms.digibooky.user.service.UserMapper;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -16,6 +17,11 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.annotation.DirtiesContext;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
@@ -26,11 +32,13 @@ class UserControllerTest {
 
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private UserRepository userRepository;
 
     @Nested
     class MemberTests{
         @Test
-        void givenMember_WhenRegisterMember_TheReturnMember() {
+        void givenMember_WhenRegisterMember_ThenReturnMember() {
             //  GIVEN
             Member expectedMember = new Member("66.02.06-203.33", "Alen", "Jeremy", "alen.jeremy@awesomeness.great", "Switchfully", "3", 3454, " KarelDeGrote");
             //  WHEN
@@ -212,7 +220,7 @@ class UserControllerTest {
     class AdminTests {
 
         @Test
-        void givenAdmin_whenRegisterLibrarian_ReturnLibrarianDto() {
+        void givenAdmin_WhenRegisterLibrarian_ReturnLibrarianDto() {
             //  GIVEN
             Librarian expectedLibrarian = new Librarian("The grey", "Gandalf", "Gandalf.TheGrey@TheLordOfThe.Ring");
             //  WHEN
@@ -237,6 +245,35 @@ class UserControllerTest {
             Assertions.assertThat(actualLibrarianDto.getFirstName()).isEqualTo(expectedLibrarianDto.getFirstName());
             Assertions.assertThat(actualLibrarianDto.getLastName()).isEqualTo(expectedLibrarianDto.getLastName());
             Assertions.assertThat(actualLibrarianDto.getEmail()).isEqualTo(expectedLibrarianDto.getEmail());
+        }
+
+        @Test
+        void givenAdmin_WhenViewMembers_ThenReturnMembers() {
+            // GIVEN
+            Member firstMember = new Member("66.02.06-203.33", "Alen", "Jeremy", "alen.jeremy@awesomeness.great", "Switchfully", "3", 3454, "KarelDeGrote");
+            Member secondMember = new Member("78.03.10-187.82", "Skywalker", "Luke", "trueChosenOne@starwars.galaxy", "Desert", "6", 4561, "Tatoine");
+            userRepository.saveMember(firstMember);
+            userRepository.saveMember(secondMember);
+            List<MemberDto> expectedListOfMemberDto = new ArrayList<>(Arrays.asList(
+                    userMapper.toMemberDto(firstMember),
+                    userMapper.toMemberDto(secondMember)
+            ));
+
+            // WHEN
+            List<MemberDto> actualListOfMemberDto = RestAssured
+                    .given()
+                    .port(port)
+                    .when()
+                    .accept(ContentType.JSON)
+                    .get("/members")
+                    .then()
+                    .assertThat()
+                    .statusCode(HttpStatus.OK.value())
+                    .extract().body().jsonPath().getList(".", MemberDto.class);
+            // THEN
+
+            Assertions.assertThat(actualListOfMemberDto).hasSameSizeAs(expectedListOfMemberDto);
+            Assertions.assertThat(actualListOfMemberDto).hasSameElementsAs(expectedListOfMemberDto);
         }
     }
 }

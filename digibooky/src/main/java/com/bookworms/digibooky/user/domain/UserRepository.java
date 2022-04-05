@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -44,5 +45,9 @@ public class UserRepository {
             throw new IllegalArgumentException("No member found for member ID " + memberId);
         }
         return foundMember;
+    }
+
+    public Collection<Member> getAllMembers() {
+        return membersById.values();
     }
 }
