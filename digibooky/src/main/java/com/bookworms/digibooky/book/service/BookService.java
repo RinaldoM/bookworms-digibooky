@@ -3,11 +3,14 @@ package com.bookworms.digibooky.book.service;
 import com.bookworms.digibooky.book.api.dto.BookDto;
 import com.bookworms.digibooky.book.domain.Book;
 import com.bookworms.digibooky.book.domain.BookRepository;
+import com.bookworms.digibooky.user.api.dto.CreateMemberDto;
 import com.bookworms.digibooky.user.domain.Librarian;
 import org.apache.catalina.mapper.Mapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -62,9 +65,29 @@ public class BookService {
     }
 
     public BookDto registerNewBook(BookDto bookDto) {
+        isbnValidation(bookDto);
+        validateAndCheckLoggingMessage(isEmptyNullSafe(bookDto.getTitle()), "No title filled in to register a book!", "Proper title introduced.");
+        validateAndCheckLoggingMessage(isEmptyNullSafe(bookDto.getAuthorLastName()), "No last name of the author filled in to register a book!", "Proper author's last name introduced.");
+
         Book book = bookMapper.toBook(bookDto);
         serviceLogger.info("New book getting registered.");
         bookRepository.saveBook(book);
         return bookMapper.toDto(book);
+    }
+
+    private void isbnValidation(BookDto bookDto) {
+        validateAndCheckLoggingMessage(isEmptyNullSafe(bookDto.getIsbn()), "No isbn filled in to register a book!", "Proper isbn number introduced.");
+    }
+
+    private void validateAndCheckLoggingMessage(boolean condition, String errorMessage, String confirmationMessage) {
+        if (condition) {
+            serviceLogger.error(errorMessage);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+        serviceLogger.info(confirmationMessage);
+    }
+
+    private boolean isEmptyNullSafe(String string) {
+        return string == null || string.isEmpty();
     }
 }

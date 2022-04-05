@@ -214,4 +214,61 @@ class BookControllerIntegrationTest {
         Assertions.assertThat(actualBookDto.getAuthorLastName()).isEqualTo(expectedBook.getAuthorLastName());
     }
 
+    @Test
+    void givenBookWithoutIsbn_WhenRegisterBook_ThenHttpStatusBadRequest() {
+        //  GIVEN
+        BookDto expectedBook = new BookDto("", "HarryPotter", "JK", "Rowling", "A book about teen wizards");
+        //  WHEN
+
+        RestAssured
+                .given()
+                .port(port)
+                .body(expectedBook)
+                .contentType(ContentType.JSON)
+                .when()
+                .accept(ContentType.JSON)
+                .post("/books")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @Test
+    void givenBookWithoutTitle_WhenRegisterBook_ThenHttpStatusBadRequest() {
+        //  GIVEN
+        BookDto expectedBook = new BookDto("10", "", "JK", "Rowling", "A book about teen wizards");
+        //  WHEN
+
+        RestAssured
+                .given()
+                .port(port)
+                .body(expectedBook)
+                .contentType(ContentType.JSON)
+                .when()
+                .accept(ContentType.JSON)
+                .post("/books")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @Test
+    void givenBookWithoutAuthorLastName_WhenRegisterBook_ThenHttpStatusBadRequest() {
+        //  GIVEN
+        BookDto expectedBook = new BookDto("10", "HarryPotter", "JK", "", "A book about teen wizards");
+        //  WHEN
+
+        RestAssured
+                .given()
+                .port(port)
+                .body(expectedBook)
+                .contentType(ContentType.JSON)
+                .when()
+                .accept(ContentType.JSON)
+                .post("/books")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST.value());
+    }
+
 }
