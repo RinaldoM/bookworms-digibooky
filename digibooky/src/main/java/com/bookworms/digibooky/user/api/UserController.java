@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Collection;
 
 import static com.bookworms.digibooky.security.Feature.REGISTER_LIBRARIAN;
+import static com.bookworms.digibooky.security.Feature.VIEW_MEMBERS;
 
 @RestController
 @RequestMapping()
@@ -40,7 +41,8 @@ public class UserController {
 
     @GetMapping(path = "members", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
-    public Collection<MemberDto> viewMembers(){
+    public Collection<MemberDto> viewMembers(@RequestHeader String authorizationId){
+        securityService.validateAuthorization(authorizationId, VIEW_MEMBERS);
         return userService.viewMembers();
     }
 }
