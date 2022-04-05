@@ -3,7 +3,9 @@ package com.bookworms.digibooky.rental.domain;
 import com.bookworms.digibooky.book.domain.BookRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,7 +28,7 @@ public class RentalRepository {
         Rental foundRental = rentalsById.get(rentalId);
         if(foundRental == null){
             repositoryLogger.error("No rental could be found for id " + rentalId);
-            throw new IllegalArgumentException("No rental could be found for id " + rentalId);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
         return foundRental ;
     }

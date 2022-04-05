@@ -4,9 +4,6 @@ import com.bookworms.digibooky.book.api.dto.BookDto;
 import com.bookworms.digibooky.book.api.dto.UpdateBookDto;
 import com.bookworms.digibooky.book.domain.Book;
 import com.bookworms.digibooky.book.domain.BookRepository;
-import com.bookworms.digibooky.user.api.dto.CreateMemberDto;
-import com.bookworms.digibooky.user.domain.Librarian;
-import org.apache.catalina.mapper.Mapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -100,4 +97,11 @@ public class BookService {
         foundBook.setSmallSummary(updateBookDto.getSmallSummary());
         return bookMapper.toDto(foundBook);
     }
+
+    public BookDto changeActiveState(String isbn) {
+        Book book = bookRepository.getBookByIsbn(isbn);
+        book.changeActiveState();
+        return bookMapper.toDto(book);
+    }
+
 }

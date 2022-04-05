@@ -23,27 +23,28 @@ public class RentalService {
 
     public CreateRentalDto lendABook(CreateRentalDto createRental) {
         Rental rental = rentalMapper.toRental(createRental);
-        if(rental.getBook().getState()){
-            serviceLogger.error("The book is already rented out!");
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        }
+        checkBookCondition(rental.getBook().getRentedState(), "The book is already rented out!");
+        checkBookCondition(!rental.getBook().isActive(), "The book is not in the library!");
         rentalRepository.addRental(rental);
         rental.getBook().changeRentedState();
-        serviceLogger.info("The book " + rental.getBook().getTitle() + " is rented to " + rental.getMember().getFirstName()+" "+rental.getMember().getLastName()+".");
-
+        serviceLogger.info("The book " + rental.getBook().getTitle() + " is rented to " + rental.getMember().getFirstName() + " " + rental.getMember().getLastName() + ".");
         return createRental;
+    }
+
+    private void checkBookCondition(boolean condition, String message) {
+        if (condition) {
+            serviceLogger.error(message);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
     }
 
     public RentalDto returnRental(String rentalId) {
         Rental rental = rentalRepository.getRentalById(rentalId);
         rental.getBook().changeRentedState();
         rentalRepository.removeRental(rental);
-        serviceLogger.info("The book " + rental.getBook().getTitle() + " is returned by " + rental.getMember().getFirstName()+" "+rental.getMember().getLastName()+".");
+        serviceLogger.info("The book " + rental.getBook().getTitle() + " is returned by " + rental.getMember().getFirstName() + " " + rental.getMember().getLastName() + ".");
         return rentalMapper.toDto(rental);
     }
-
-
-
 
 
 }
