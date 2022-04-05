@@ -1,5 +1,7 @@
 package com.bookworms.digibooky.user.domain;
 
+import com.bookworms.digibooky.security.Role;
+
 import java.util.UUID;
 
 public abstract class User {
@@ -7,8 +9,10 @@ public abstract class User {
     private final String lastName;
     private final String firstName;
     private final String email;
+    private final Role role;
 
-    public User(String lastName, String firstName, String email) {
+    public User(String lastName, String firstName, String email, Role role) {
+        this.role = role;
         this.id = UUID.randomUUID().toString();
         this.lastName = lastName;
         this.firstName = firstName;
@@ -30,4 +34,9 @@ public abstract class User {
     public String getEmail() {
         return email;
     }
+
+    public Role getRole() {
+        return role;
+    }
+
 }
