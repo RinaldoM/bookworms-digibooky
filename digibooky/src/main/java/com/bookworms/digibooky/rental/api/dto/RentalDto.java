@@ -30,11 +30,11 @@ public class RentalDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         RentalDto rentalDto = (RentalDto) o;
-        return Objects.equals(rentalId, rentalDto.rentalId) && Objects.equals(userId, rentalDto.userId) && Objects.equals(bookIsbn, rentalDto.bookIsbn);
+        return Objects.equals(userId, rentalDto.userId) && Objects.equals(bookIsbn, rentalDto.bookIsbn);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(rentalId, userId, bookIsbn);
+        return Objects.hash(userId, bookIsbn);
     }
 }

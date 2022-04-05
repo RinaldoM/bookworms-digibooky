@@ -83,7 +83,7 @@ class RentalControllerTest {
         rental.getBook().changeRentedState();
         rentalRepository.addRental(rental);
 
-       RestAssured
+        RestAssured
                 .given()
                 .port(port)
                 .body(expectedRental)
@@ -97,6 +97,7 @@ class RentalControllerTest {
         //then
 
     }
+
     @Test
     void givenIsARental_whenReturned_thenRentalIsDeleted() {
         //given
@@ -120,7 +121,7 @@ class RentalControllerTest {
                 .contentType(ContentType.JSON)
                 .when()
                 .accept(ContentType.JSON)
-                .delete("/rentals/"+rental.getRentalId())
+                .delete("/rentals/" + rental.getRentalId())
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.OK.value())
@@ -215,7 +216,7 @@ class RentalControllerTest {
                 .port(port)
                 .when()
                 .accept(ContentType.JSON)
-                .get("/rentals/121")
+                .get("/rentals/" + member.getId())
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.OK.value())

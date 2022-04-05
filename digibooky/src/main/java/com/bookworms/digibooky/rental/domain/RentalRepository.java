@@ -7,7 +7,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Repository
@@ -31,6 +33,10 @@ public class RentalRepository {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
         return foundRental ;
+    }
+
+    public Collection<Rental> getAll() {
+        return rentalsById.values();
     }
 
     public void removeRental(Rental rental) {
