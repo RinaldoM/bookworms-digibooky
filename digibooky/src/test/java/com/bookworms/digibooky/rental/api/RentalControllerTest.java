@@ -226,4 +226,33 @@ class RentalControllerTest {
 
         Assertions.assertThat(List.of(actualRentalList)).hasSameElementsAs(rentalmapper.toDto(expectedRentalList));
     }
+
+    @Test
+    void showRentalsOfNonExistingMember_ThenHttpStatusBadRequest() {
+        //given
+        Book book1 = new Book("1", "JosFons", "Jos", "Fons", "story about JosFons");
+        Book book2 = new Book("2", "FonsJos", "Fons", "Jos", "story about FonsJos");
+        Book book3 = new Book("3", "Stay Away", "Get", "Lost", "don't show up in test results please");
+        Member member = new Member("121", "Jan", "jan@piet.com", "GenkStad");
+        bookRepository.save(book1);
+        bookRepository.save(book2);
+        bookRepository.save(book3);
+        userRepository.saveMember(member);
+        //when
+        CreateRentalDto expectedRental1 = new CreateRentalDto(member.getId(), book1.getIsbn());
+        CreateRentalDto expectedRental2 = new CreateRentalDto(member.getId(), book2.getIsbn());
+
+        rentalRepository.addRental(rentalmapper.toRental(expectedRental1));
+        rentalRepository.addRental(rentalmapper.toRental(expectedRental2));
+
+        RestAssured
+                .given()
+                .port(port)
+                .when()
+                .accept(ContentType.JSON)
+                .get("/rentals/" + "notAnId")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST.value());
+    }
 }

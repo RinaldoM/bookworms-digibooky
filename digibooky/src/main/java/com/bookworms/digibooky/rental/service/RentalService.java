@@ -50,10 +50,18 @@ public class RentalService {
     }
 
 
-    public List<RentalDto> getRentalsOfMember(String memberId) {
+    private List<RentalDto> filterRentalsOfMember(String memberId) {
         return rentalRepository.getAll().stream()
                 .filter(rental -> rental.getMember().getId().equals(memberId))
-                .map(rental -> rentalMapper.toDto(rental))
+                .map(rentalMapper::toDto)
                 .collect(Collectors.toList());
+    }
+
+    public List<RentalDto> getRentalsOfMember(String memberId) {
+        if (filterRentalsOfMember(memberId) == null || filterRentalsOfMember(memberId).size() == 0) {
+            serviceLogger.error("No rentals found for member with id " + memberId);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+        return filterRentalsOfMember(memberId);
     }
 }
