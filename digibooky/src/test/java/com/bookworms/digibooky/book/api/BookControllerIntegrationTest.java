@@ -5,6 +5,8 @@ import com.bookworms.digibooky.book.api.dto.UpdateBookDto;
 import com.bookworms.digibooky.book.domain.Book;
 import com.bookworms.digibooky.book.domain.BookRepository;
 import com.bookworms.digibooky.book.service.BookMapper;
+import com.bookworms.digibooky.user.domain.Librarian;
+import com.bookworms.digibooky.user.domain.UserRepository;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.assertj.core.api.Assertions;
@@ -33,6 +35,8 @@ class BookControllerIntegrationTest {
 
     @Autowired
     private BookMapper bookMapper;
+    @Autowired
+    private UserRepository userRepository;
 
     @Test
     void getAllBooks_BooksAreShownCorrectly() {
@@ -188,12 +192,16 @@ class BookControllerIntegrationTest {
     @Test
     void givenBook_WhenRegisterBook_TheReturnBook() {
         //  GIVEN
+        Librarian librarian = new Librarian("Dumbledore", "Albus", "GryffindorAllTheWay@Hogward.en");
+        userRepository.saveLibrarian(librarian);
+
         BookDto expectedBook = new BookDto("10", "HarryPotter", "JK", "Rowling", "A book about teen wizards");
         //  WHEN
 
         BookDto actualBookDto = RestAssured
                 .given()
                 .port(port)
+                .header("authorizationId", librarian.getId())
                 .body(expectedBook)
                 .contentType(ContentType.JSON)
                 .when()
@@ -275,6 +283,9 @@ class BookControllerIntegrationTest {
     @Test
     void updateBook_BookIsUpdatedCorrectly() {
 
+        Librarian librarian = new Librarian("Dumbledore", "Albus", "GryffindorAllTheWay@Hogward.en");
+        userRepository.saveLibrarian(librarian);
+
         List<Book> bookList = Lists.newArrayList(
                 new Book("1", "HarryPotter", "JK", "Rowling", "A book about teen wizards"),
                 new Book("2", "GameOfThrone", "GeorgeRR", "Martin", "A book about pissed off families"));
@@ -285,6 +296,7 @@ class BookControllerIntegrationTest {
         BookDto updatedBookDto = RestAssured
                 .given()
                 .port(port)
+                .header("authorizationId", librarian.getId())
                 .body(expectedBookDto)
                 .contentType(ContentType.JSON)
                 .when()
@@ -306,6 +318,9 @@ class BookControllerIntegrationTest {
     @Test
     void SoftDeleteBook_BookIsSoftDeletedCorrectly() {
 
+        Librarian librarian = new Librarian("Dumbledore", "Albus", "GryffindorAllTheWay@Hogward.en");
+        userRepository.saveLibrarian(librarian);
+
         List<Book> bookList = Lists.newArrayList(
                 new Book("1", "HarryPotter", "JK", "Rowling", "A book about teen wizards"),
                 new Book("2", "GameOfThrone", "GeorgeRR", "Martin", "A book about pissed off families"));
@@ -314,6 +329,7 @@ class BookControllerIntegrationTest {
         RestAssured
                 .given()
                 .port(port)
+                .header("authorizationId", librarian.getId())
                 .contentType(ContentType.JSON)
                 .when()
                 .accept(ContentType.JSON)
@@ -383,6 +399,9 @@ class BookControllerIntegrationTest {
     @Test
     void RestoreDeletedBook_BookIsRestoredCorrectly() {
 
+        Librarian librarian = new Librarian("Dumbledore", "Albus", "GryffindorAllTheWay@Hogward.en");
+        userRepository.saveLibrarian(librarian);
+
         List<Book> bookList = Lists.newArrayList(
                 new Book("1", "HarryPotter", "JK", "Rowling", "A book about teen wizards"),
                 new Book("2", "GameOfThrone", "GeorgeRR", "Martin", "A book about pissed off families"));
@@ -393,6 +412,7 @@ class BookControllerIntegrationTest {
         RestAssured
                 .given()
                 .port(port)
+                .header("authorizationId", librarian.getId())
                 .contentType(ContentType.JSON)
                 .when()
                 .accept(ContentType.JSON)
