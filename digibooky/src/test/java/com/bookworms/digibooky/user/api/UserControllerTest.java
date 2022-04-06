@@ -255,6 +255,9 @@ class UserControllerTest {
         @Test
         void givenAdmin_WhenViewMembers_ThenReturnMembers() {
             // GIVEN
+            Admin admin = new Admin("Dumbledore", "Albus", "GryffindorAllTheWay@Hogward.en");
+            userRepository.saveAdmin(admin);
+
             Member firstMember = new Member("66.02.06-203.33", "Alen", "Jeremy", "alen.jeremy@awesomeness.great", "Switchfully", "3", 3454, "KarelDeGrote");
             Member secondMember = new Member("78.03.10-187.82", "Skywalker", "Luke", "trueChosenOne@starwars.galaxy", "Desert", "6", 4561, "Tatoine");
             userRepository.saveMember(firstMember);
@@ -268,6 +271,7 @@ class UserControllerTest {
             List<MemberDto> actualListOfMemberDto = RestAssured
                     .given()
                     .port(port)
+                    .header("authorizationId", admin.getId())
                     .when()
                     .accept(ContentType.JSON)
                     .get("/members")
