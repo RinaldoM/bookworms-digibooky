@@ -1,10 +1,14 @@
 package com.bookworms.digibooky.user.domain;
 
 import com.bookworms.digibooky.security.Role;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.UUID;
 
 public abstract class User {
+    private final Logger userLogger = LoggerFactory.getLogger(User.class);
+
     private final String id;
     private final String lastName;
     private final String firstName;
@@ -17,6 +21,7 @@ public abstract class User {
         this.lastName = lastName;
         this.firstName = firstName;
         this.email = email;
+        userLogger.info("user created with id " + id);
     }
 
     public String getId() {

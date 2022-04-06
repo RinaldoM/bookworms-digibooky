@@ -2,6 +2,7 @@ package com.bookworms.digibooky.user.api;
 
 import com.bookworms.digibooky.security.Feature;
 import com.bookworms.digibooky.security.SecurityService;
+import com.bookworms.digibooky.user.api.dto.CreateLibrarianDto;
 import com.bookworms.digibooky.user.api.dto.CreateMemberDto;
 import com.bookworms.digibooky.user.api.dto.LibrarianDto;
 import com.bookworms.digibooky.user.api.dto.MemberDto;
@@ -33,9 +34,9 @@ public class UserController {
 
     @PostMapping(path = "librarians", consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public LibrarianDto registerLibrarian(@RequestHeader String authorizationId, @RequestBody LibrarianDto librarianDto){
+    public LibrarianDto registerLibrarian(@RequestHeader String authorizationId, @RequestBody CreateLibrarianDto createLibrarianDto){
         securityService.validateAuthorization(authorizationId, REGISTER_LIBRARIAN);
-        return userService.registerLibrarian(librarianDto);
+        return userService.registerLibrarian(createLibrarianDto);
     }
 
     @GetMapping(path = "members", produces = "application/json")

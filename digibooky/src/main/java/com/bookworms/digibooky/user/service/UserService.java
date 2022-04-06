@@ -1,5 +1,6 @@
 package com.bookworms.digibooky.user.service;
 
+import com.bookworms.digibooky.user.api.dto.CreateLibrarianDto;
 import com.bookworms.digibooky.user.api.dto.CreateMemberDto;
 import com.bookworms.digibooky.user.api.dto.LibrarianDto;
 import com.bookworms.digibooky.user.api.dto.MemberDto;
@@ -27,8 +28,8 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public LibrarianDto registerLibrarian(LibrarianDto librarianDto) {
-        Librarian librarian = userMapper.toLibrarian(librarianDto);
+    public LibrarianDto registerLibrarian(CreateLibrarianDto createLibrarianDto) {
+        Librarian librarian = userMapper.toLibrarian(createLibrarianDto);
         serviceLogger.info("Librarian getting created.");
         userRepository.saveLibrarian(librarian);
         return userMapper.toLibrarianDto(librarian);

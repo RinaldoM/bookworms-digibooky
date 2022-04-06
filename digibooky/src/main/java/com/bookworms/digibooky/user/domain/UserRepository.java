@@ -2,7 +2,9 @@ package com.bookworms.digibooky.user.domain;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -47,7 +49,7 @@ public class UserRepository {
         Member foundMember = membersById.get(memberId);
         if (foundMember == null) {
             repositoryLogger.error("No member found for member ID " + memberId);
-            throw new IllegalArgumentException("No member found for member ID " + memberId);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
         return foundMember;
     }
@@ -68,7 +70,7 @@ public class UserRepository {
         foundUser = adminsById.get(userId);
         if (foundUser == null) {
             repositoryLogger.error("No user found for user ID " + userId);
-            throw new IllegalArgumentException("No user found for user ID " + userId);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
         return foundUser;
     }

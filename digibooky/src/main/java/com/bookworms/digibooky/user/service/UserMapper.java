@@ -1,5 +1,6 @@
 package com.bookworms.digibooky.user.service;
 
+import com.bookworms.digibooky.user.api.dto.CreateLibrarianDto;
 import com.bookworms.digibooky.user.api.dto.CreateMemberDto;
 import com.bookworms.digibooky.user.api.dto.LibrarianDto;
 import com.bookworms.digibooky.user.api.dto.MemberDto;
@@ -49,11 +50,11 @@ public class UserMapper {
                 librarian.getEmail());
     }
 
-    public Librarian toLibrarian(LibrarianDto librarianDto) {
+    public Librarian toLibrarian(CreateLibrarianDto createLibrarianDto) {
         return new Librarian(
-                librarianDto.getLastName(),
-                librarianDto.getFirstName(),
-                librarianDto.getEmail()
+                createLibrarianDto.getLastName(),
+                createLibrarianDto.getFirstName(),
+                createLibrarianDto.getEmail()
         );
     }
 
