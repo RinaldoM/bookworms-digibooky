@@ -2,7 +2,6 @@ package com.bookworms.digibooky.rental.api;
 
 import com.bookworms.digibooky.rental.api.dto.CreateRentalDto;
 import com.bookworms.digibooky.rental.api.dto.RentalDto;
-import com.bookworms.digibooky.rental.domain.Rental;
 import com.bookworms.digibooky.rental.service.RentalService;
 import com.bookworms.digibooky.security.SecurityService;
 import org.springframework.http.HttpStatus;
@@ -18,8 +17,9 @@ public class RentalController {
     private final RentalService rentalService;
     private SecurityService securityService;
 
-    public RentalController(RentalService rentalService) {
+    public RentalController(RentalService rentalService, SecurityService securityService) {
         this.rentalService = rentalService;
+        this.securityService = securityService;
     }
 
     @PostMapping(produces = "application/json")

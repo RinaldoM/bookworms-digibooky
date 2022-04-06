@@ -7,6 +7,8 @@ import com.bookworms.digibooky.rental.api.dto.RentalDto;
 import com.bookworms.digibooky.rental.domain.Rental;
 import com.bookworms.digibooky.rental.domain.RentalRepository;
 import com.bookworms.digibooky.rental.service.RentalMapper;
+import com.bookworms.digibooky.user.domain.Admin;
+import com.bookworms.digibooky.user.domain.Librarian;
 import com.bookworms.digibooky.user.domain.Member;
 import com.bookworms.digibooky.user.domain.UserRepository;
 import io.restassured.RestAssured;
@@ -193,6 +195,9 @@ class RentalControllerTest {
     @Test
     void showRentalsOfMember_RentalsAreShownCorrectly() {
         //given
+        Librarian librarian = new Librarian("Dumbledore", "Albus", "GryffindorAllTheWay@Hogward.en");
+        userRepository.saveLibrarian(librarian);
+
         Book book1 = new Book("1", "JosFons", "Jos", "Fons", "story about JosFons");
         Book book2 = new Book("2", "FonsJos", "Fons", "Jos", "story about FonsJos");
         Book book3 = new Book("3", "Stay Away", "Get", "Lost", "don't show up in test results please");
@@ -213,6 +218,7 @@ class RentalControllerTest {
         RentalDto[] actualRentalList = RestAssured
                 .given()
                 .port(port)
+                .header("authorizationId", librarian.getId())
                 .when()
                 .accept(ContentType.JSON)
                 .get("/rentals/" + member.getId())
@@ -229,6 +235,9 @@ class RentalControllerTest {
     @Test
     void showRentalsOfNonExistingMember_ThenHttpStatusBadRequest() {
         //given
+        Librarian librarian = new Librarian("Dumbledore", "Albus", "GryffindorAllTheWay@Hogward.en");
+        userRepository.saveLibrarian(librarian);
+
         Book book1 = new Book("1", "JosFons", "Jos", "Fons", "story about JosFons");
         Book book2 = new Book("2", "FonsJos", "Fons", "Jos", "story about FonsJos");
         Book book3 = new Book("3", "Stay Away", "Get", "Lost", "don't show up in test results please");
@@ -247,6 +256,7 @@ class RentalControllerTest {
         RestAssured
                 .given()
                 .port(port)
+                .header("authorizationId", librarian.getId())
                 .when()
                 .accept(ContentType.JSON)
                 .get("/rentals/" + "notAnId")
@@ -258,6 +268,9 @@ class RentalControllerTest {
     @Test
     void showRentalsThatAreOverdue_RentalsAreShownCorrectly() {
         //given
+        Librarian librarian = new Librarian("Dumbledore", "Albus", "GryffindorAllTheWay@Hogward.en");
+        userRepository.saveLibrarian(librarian);
+
         Book book1 = new Book("1", "JosFons", "Jos", "Fons", "story about JosFons");
         Book book2 = new Book("2", "FonsJos", "Fons", "Jos", "story about FonsJos");
         Book book3 = new Book("3", "Stay Away", "Get", "Lost", "don't show up in test results please");
@@ -280,6 +293,7 @@ class RentalControllerTest {
 
         RentalDto[] actualRentalList = RestAssured
                 .given()
+                .header("authorizationId", librarian.getId())
                 .port(port)
                 .when()
                 .accept(ContentType.JSON)
